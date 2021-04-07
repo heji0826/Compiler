@@ -53,7 +53,7 @@ class FiniteAutomaton:
     def Reset(self):
         self.currentState = "T0"
  
-# Transition Table of Arithmetic Operator DFA
+# Transition Table of each token's DFA
 COMPARISON = {
     "AcceptedStates": {
         "T1": "COMPARISON",
