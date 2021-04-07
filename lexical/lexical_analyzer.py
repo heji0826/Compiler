@@ -9,6 +9,7 @@ class FiniteAutomaton:
         self.acceptedStates.update(_dfa["AcceptedStates"])
  
     def PeekNextState(self, _input):
+        # digit 들어오면 input str 말고 숫자로 형변환하거나, 'digit'으로 바꾸거나 하기
         if not _input in self.table[self.currentState]:
             print("Unknown Input Symbol is Given.")
             exit()
@@ -41,12 +42,11 @@ class FiniteAutomaton:
  
 # Transition Table of Arithmetic Operator DFA
 ARITHMETIC_OPERATOR = {
-    # 들어와서 isdigit? true면 무조건 'digit'라고 바꾸는거지 
     "AcceptedStates": {
-        "T1": "ArithmeticOperator플러스",
-        "T2": "ArithmeticOperator마이너스",
-        "T3": "ArithmeticOperator곱하기",
-        "T4": "ArithmeticOperator나누기"
+        "T1": "OP",
+        "T2": "OP",
+        "T3": "OP",
+        "T4": "OP",
     },
     "Table": {
         "T0": {"+": "T1", "-": "T2", "*": "T3", "/": "T4"},
@@ -58,18 +58,23 @@ ARITHMETIC_OPERATOR = {
 }
 
 if __name__=="__main__":
-    # DFA를 ARITHMETIC_OPERATOR로 초기화
-    dfa = FiniteAutomaton()
-    dfa.LoadTransitionTable(ARITHMETIC_OPERATOR)
-    # DFA 사용
-    print("---TEST---")
-    print("Input이 \"*\"일 때")
-    input_char = "ㅁ" #파일을 읽는거야..
-    nextState = dfa.PeekNextState(input_char)
-    dfa.SetState(nextState)
-    print("Accepted State입니까?", dfa.IsAccepted())
-    print("나의 현재 State:", dfa.GetState())
-    print("토큰이 {}로 분류되었습니다.".format(dfa.GetToken()))
-    # dfa를 사용을 마쳤으면 종료
-    dfa.Reset()
-    print("-----------")
+    f = open("./temp.txt", 'r')
+    inputString = f.read()
+    f.close()
+
+    transition_table=[ARITHMETIC_OPERATOR]
+    # for문으로 한번 크게 크게 돌기
+
+    print("----tests----")
+    for input_char in inputString :
+        for i in range(0,len(transition_table)):
+            dfa = FiniteAutomaton()
+            dfa.LoadTransitionTable(transition_table[i])
+            
+            nextState = dfa.PeekNextState(input_char)
+            dfa.SetState(nextState)
+            #123 이렇게 들어가면 뭔지 생각해보자..
+            if dfa.IsAccepted():
+                print("<"+dfa.GetToken()+","+input_char+">,")
+            else :
+                dfa.Reset()
