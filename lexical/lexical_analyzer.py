@@ -90,6 +90,18 @@ SIGN_INTEGER = {
     }
 }
 
+BRACE = {
+    "AcceptedStates": {
+        "T1": "LBRACE",
+        "T2": "RBRACE",
+    },
+    "Table": {
+        "T0": {"{": "T1", "}": "T2" },
+        "T1": {"{": "",   "}": "",  },
+        "T2": {"{": "",   "}": "",  },
+    }
+}
+
 
 ARITHMETIC_OPERATOR = {
     "AcceptedStates": {
