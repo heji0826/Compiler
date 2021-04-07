@@ -145,6 +145,18 @@ ARITHMETIC_OPERATOR = {
     }
 }
 
+BOOL_STRING = {
+    "AcceptedStates": {
+        "T1": "true",
+        "T2": "false",
+    },
+    "Table": {
+        "T0": {"true": "T1", "false": "T2" },
+        "T1": {"true": "",   "false": "",  },
+        "T2": {"true": "",   "false": "",  },
+    }
+}
+
 
 if __name__=="__main__":
     f = open("./lexical/temp.txt", 'r')
