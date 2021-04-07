@@ -11,13 +11,13 @@ class FiniteAutomaton:
     def PeekNextState(self, _input):
         # digit 들어오면 input str 말고 숫자로 형변환하거나, 'digit'으로 바꾸거나 하기
         if _input.isdigit():
-            if _input!=0:
+            if _input==0:
                 _input='DIGIT'
             else :
                 _input='EXCEPT_ZERO'
         
         if not _input in self.table[self.currentState]:
-            print("Unknown Input Symbol is Given.")
+            # print("Unknown Input Symbol is Given.")
             return "Unknown"
 
         nextState = self.table[self.currentState][_input]
@@ -51,7 +51,7 @@ class FiniteAutomaton:
 # Transition Table of Arithmetic Operator DFA
 SIGN_INTEGER = {
     "AcceptedStates": {
-        "T2": "SIGN_INTEGER",
+        "T2": "INTEGER",
         "T3": "SIGN_INTEGER",
         "T4": "SIGN_INTEGER",
         "T5": "SIGN_INTEGER",
@@ -97,15 +97,17 @@ if __name__=="__main__":
         for i in range(0,len(transition_table)):
             dfa = FiniteAutomaton()
             dfa.LoadTransitionTable(transition_table[i])
+
             if dfa.PeekNextState(input_char)=="Unknown":
-                continue 
-            nextState = dfa.PeekNextState(input_char)
-            dfa.SetState(nextState)
-            #input char 하나가 아니라 여러개가 모여서 만들어지는 token 구하려면 뭘 더 추가해야할듯..
-            if dfa.IsAccepted():
-                print("<"+dfa.GetToken()+","+input_char+">,")
                 dfa.Reset()
-                break
             else :
-                dfa.Reset()
-                continue
+                nextState = dfa.PeekNextState(input_char)
+                dfa.SetState(nextState)
+                #input char 하나가 아니라 여러개가 모여서 만들어지는 token 구하려면 뭘 더 추가해야할듯..
+
+                if dfa.IsAccepted():
+                    print("<"+dfa.GetToken()+","+input_char+">,")
+                    dfa.Reset()
+                    break
+                else :
+                    dfa.Reset()
