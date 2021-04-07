@@ -31,12 +31,6 @@ class FiniteAutomaton:
         else:
             return nextState
     
-    def GetFlag(self):
-        return self.flag
-
-    def SetFlag(self, _flag):
-        self.flag =_flag
-
     def GetState(self):
         return self.currentState
         # 필요없을듯
