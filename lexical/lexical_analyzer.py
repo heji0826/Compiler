@@ -17,10 +17,10 @@ class FiniteAutomaton:
                 _input='EXCEPT_ZERO'
         
         if not _input in self.table[self.currentState]:
-            # print("Unknown Input Symbol is Given.")
             return "Unknown"
 
         nextState = self.table[self.currentState][_input]
+
         if nextState == "":
             return "Rejected"
         else:
@@ -114,6 +114,20 @@ BRACKET= {
     }
 }
 
+WHITESPACE= {
+    "AcceptedStates": {
+        "T1": "WHITESPACE",
+        "T2": "WHITESPACE",
+        "T3": "WHITESPACE",
+    },
+    "Table": {
+        "T0": {"\t": "T1", "\n": "T2", " ":"T3" },
+        "T1": {"\t": "",   "\n": "",   " ":"T3" },
+        "T2": {"\t": "",   "\n": "",   " ":"T3" },
+        "T3": {"\t": "",   "\n": "",   " ":"T3" },
+    }
+}
+
 
 ARITHMETIC_OPERATOR = {
     "AcceptedStates": {
@@ -153,7 +167,10 @@ if __name__=="__main__":
                 #input char 하나가 아니라 여러개가 모여서 만들어지는 token 구하려면 뭘 더 추가해야할듯..
 
                 if dfa.IsAccepted():
-                    print("<"+dfa.GetToken()+","+input_char+">,")
+                    if dfa.GetToken=="WHITETOKEN":
+                        pass
+                    else :
+                        print("<"+dfa.GetToken()+","+input_char+">,")
                     dfa.Reset()
                     break
                 else :
