@@ -49,6 +49,28 @@ class FiniteAutomaton:
         self.currentState = "T0"
  
 # Transition Table of Arithmetic Operator DFA
+COMPARISON = {
+    "AcceptedStates": {
+        "T1": "COMPARISON",
+        "T2": "COMPARISON",
+        "T3": "COMPARISON",
+        "T4": "COMPARISON",
+        "T5": "COMPARISON",
+        "T6": "COMPARISON",
+    },
+    "Table": {
+        "T0": {">": "T1", "<": "T2", "==": "T3", "!=": "T4", ">=":"T5", "<=":"T6" },
+        "T1": {">": "",   "<": "",   "==": "",   "!=": "",   ">=":"",   "<=":""  },
+        "T2": {">": "",   "<": "",   "==": "",   "!=": "",   ">=":"",   "<=":""  },
+        "T3": {">": "",   "<": "",   "==": "",   "!=": "",   ">=":"",   "<=":""  },
+        "T4": {">": "",   "<": "",   "==": "",   "!=": "",   ">=":"",   "<=":""  },
+        "T5": {">": "",   "<": "",   "==": "",   "!=": "",   ">=":"",   "<=":""  },
+        "T6": {">": "",   "<": "",   "==": "",   "!=": "",   ">=":"",   "<=":""  },
+    }
+}
+
+
+
 SIGN_INTEGER = {
     "AcceptedStates": {
         "T2": "INTEGER",
@@ -67,6 +89,7 @@ SIGN_INTEGER = {
         "T6": {"-": "",   "EXCEPT_ZERO": "",   "DIGIT": "T6", "0": ""  },
     }
 }
+
 
 ARITHMETIC_OPERATOR = {
     "AcceptedStates": {
