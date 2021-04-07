@@ -1,11 +1,3 @@
-from copy import copy
-
-def check_prev_input(prev_input):
-    if prev_input.isdigit():
-        return "digit"
-    else :
-        return "noDigit"
-
 class FiniteAutomaton:
     def __init__(self):
         self.table = {}
@@ -17,19 +9,13 @@ class FiniteAutomaton:
         self.table = _dfa["Table"]
         self.acceptedStates=_dfa["AcceptedStates"]
  
-    def PeekNextState(self, _input, prev_input=None, temp=None):
+    def PeekNextState(self, _input):
         if _input.isdigit():
             if _input=='0':
-                if prev_input=="noDigit" or prev_input==None :
-                    pass
-                else :
-                    _input='DIGIT'
+                _input='DIGIT'
             else :
-                if prev_input=="noDigit" or prev_input==None :
-                    print(_input)
-                    _input='EXCEPT_ZERO'
-                else :
-                    _input='DIGIT'
+                _input='EXCEPT_ZERO'
+                # _input='DIGIT'
                     
         elif _input.isalpha() and len(_input)==1 :
             _input='LETTER'
@@ -72,7 +58,6 @@ class FiniteAutomaton:
  
     def Reset(self):
         self.currentState = "T0"
-        self.consecutive_digit = 0
  
 # Transition Table of Arithmetic Operator DFA
 COMPARISON = {
@@ -230,7 +215,6 @@ if __name__=="__main__":
                 nextState = dfa.PeekNextState(input_char)
                 dfa.SetState(nextState)
                 
-
                 if dfa.IsAccepted():
                     # 현재도 accept token이지만 남은 input symbol이 있는지 확인하는 과정 (중요)
                     # 그다음 symbol을 입력받았을때(next_index변수 확인) accept한 경우엔 temp_input_char에 append해줌 (list추가) 
@@ -296,4 +280,4 @@ if __name__=="__main__":
                 #     prev_is_digit = check_prev_input(inputString[prev_index])
                 # prev_is_digit = check_prev_input(inputString[index])
 
-# dfd
+# dfd 400줄 정도 나오겠다 으아아
