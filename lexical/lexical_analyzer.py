@@ -99,10 +99,10 @@ COMPARISON = {
 SIGN_INTEGER = {
     "AcceptedStates": {
         "T2": "INTEGER",
-        "T3": "SIGN_INTEGER",
-        "T4": "SIGN_INTEGER",
-        "T5": "SIGN_INTEGER",
-        "T6": "SIGN_INTEGER",
+        "T3": "INTEGER",
+        "T4": "INTEGER",
+        "T5": "INTEGER",
+        "T6": "INTEGER",
     },
     "Table": {
         "T0": {"-": "T1", "EXCEPT_ZERO": "T2", "DIGIT": "",   "0": "T3"},
@@ -172,8 +172,8 @@ ARITHMETIC_OPERATOR = {
 
 BOOL_STRING = {
     "AcceptedStates": {
-        "T1": "BOOL_STRING",
-        "T2": "BOOL_STRING",
+        "T1": "BOOL",
+        "T2": "BOOL",
     },
     "Table": {
         "T0": {"true": "T1", "false": "T2" },
@@ -184,11 +184,11 @@ BOOL_STRING = {
 
 IDENTIFIER = {
     "AcceptedStates": {
-        "T1": "IDENTIFIER",
-        "T2": "IDENTIFIER",
-        "T3": "IDENTIFIER",
-        "T4": "IDENTIFIER",
-        "T5": "IDENTIFIER",
+        "T1": "ID",
+        "T2": "ID",
+        "T3": "ID",
+        "T4": "ID",
+        "T5": "ID",
     },
     "Table": {
         "T0": {"LETTER": "T1", "-": "T2", "DIGIT": "" },
