@@ -102,6 +102,18 @@ BRACE = {
     }
 }
 
+BRACKET= {
+    "AcceptedStates": {
+        "T1": "LBRACKET",
+        "T2": "RBRACKET",
+    },
+    "Table": {
+        "T0": {"[": "T1", "]": "T2" },
+        "T1": {"[": "",   "]": "",  },
+        "T2": {"[": "",   "]": "",  },
+    }
+}
+
 
 ARITHMETIC_OPERATOR = {
     "AcceptedStates": {
