@@ -4,7 +4,7 @@ class FiniteAutomaton:
         self.currentState = "T0"
         self.acceptedStates = {}
 
- 
+
     def LoadTransitionTable(self, _dfa):
         self.table = _dfa["Table"]
         self.acceptedStates=_dfa["AcceptedStates"]
@@ -170,11 +170,11 @@ IDENTIFIER = {
         "T5": "ID",
     },
     "Table": {
-        "T0": {"LETTER": "T1", "-": "T2", "DIGIT": "" },
-        "T1": {"LETTER": "T3", "-": "T4", "DIGIT": "T5" },
-        "T2": {"LETTER": "T3", "-": "T4", "DIGIT": "T5" },
-        "T3": {"LETTER": "T3", "-": "T4", "DIGIT": "T5" },
-        "T4": {"LETTER": "T3", "-": "T4", "DIGIT": "T5" },
+        "T0": {"LETTER": "T1", "_": "T2", "DIGIT": "" },
+        "T1": {"LETTER": "T3", "_": "T4", "DIGIT": "T5" },
+        "T2": {"LETTER": "T3", "_": "T4", "DIGIT": "T5" },
+        "T3": {"LETTER": "T3", "_": "T4", "DIGIT": "T5" },
+        "T4": {"LETTER": "T3", "_": "T4", "DIGIT": "T5" },
     }
 }
 
@@ -200,6 +200,8 @@ if __name__=="__main__":
             dfa = FiniteAutomaton()
             dfa.LoadTransitionTable(transition_table[i])
             
+            index=inputString.find(input_char)
+
             if dfa.PeekNextState(input_char)=="Unknown":
                 dfa.Reset()
 
@@ -221,6 +223,7 @@ if __name__=="__main__":
                         if next_index == len(inputString) :
                             if temp_getToken !="" :
                                 print("<",temp_getToken,",",''.join(temp_input_char)+input_char,">,")
+                                # dfa.TempReset()
                                 temp_getToken="" #초기화
                                 temp_input_char=[] #초기화
                                 dfa.Reset()
