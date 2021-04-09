@@ -1,34 +1,18 @@
-def check_prev_is_digit(input_char, prev_input_char=None):
-    if input_char.isdigit() : 
-        if prev_input_char :
-            if prev_input_char.isdigit() :
-                    return 'DIGIT'
-
-            else :
-                if input_char != '0' :
-                    return 'EXCEPT_ZERO'
-                else :
-                    return input_char
-        else :
-            if input_char !='0':
-                return 'EXCEPT_ZERO'
-            else:
-                return input_char
-
-    else:
-        return input_char
-
-
 class FiniteAutomaton:
     def __init__(self):
         self.table = {}
         self.currentState = "T0"
         self.acceptedStates = {}
+        self.tableName = {}
 
 
     def LoadTransitionTable(self, _dfa):
         self.table = _dfa["Table"]
         self.acceptedStates=_dfa["AcceptedStates"]
+        self.tableName =_dfa["Name"]
+
+    def GetTableName(self):
+        return self.tableName
  
     def PeekNextState(self, _input):
         # if _input.isdigit():
@@ -37,11 +21,9 @@ class FiniteAutomaton:
         #     else :
         #         _input='EXCEPT_ZERO'
         #         # _input='DIGIT'
-
-        # identifier인 경우에만 해야할듯..? 
-        if _input.isalpha() and len(_input)==1 :
+                    
+        if _input.isalpha() and len(_input)==1 and self.GetTableName()=='IDENTIFIER' :
             _input='LETTER'
-            
         
 
         if not _input in self.table[self.currentState]:
@@ -78,6 +60,7 @@ class FiniteAutomaton:
  
 # Transition Table of each token's DFA
 COMPARISON = {
+    "Name" : "COMPARISON",
     "AcceptedStates": {
         "T1": "COMPARISON",
         "T2": "COMPARISON",
@@ -99,6 +82,7 @@ COMPARISON = {
 
 
 SIGN_INTEGER = {
+    "Name" : "SIGN_INTEGER",
     "AcceptedStates": {
         "T2": "INTEGER",
         "T3": "INTEGER",
@@ -118,6 +102,7 @@ SIGN_INTEGER = {
 }
 
 BRACE = {
+    "Name" : "BRACE",
     "AcceptedStates": {
         "T1": "LBRACE",
         "T2": "RBRACE",
@@ -130,6 +115,7 @@ BRACE = {
 }
 
 BRACKET= {
+    "Name" : "BRACKET",
     "AcceptedStates": {
         "T1": "LBRACKET",
         "T2": "RBRACKET",
@@ -142,6 +128,7 @@ BRACKET= {
 }
 
 WHITESPACE= {
+    "Name" : "WHITESPACE",
     "AcceptedStates": {
         "T1": "WHITESPACE",
         "T2": "WHITESPACE",
@@ -157,6 +144,7 @@ WHITESPACE= {
 
 
 ARITHMETIC_OPERATOR = {
+    "Name" : "ARITHMETIC_OPERATOR",
     "AcceptedStates": {
         "T1": "OP",
         "T2": "OP",
@@ -173,6 +161,7 @@ ARITHMETIC_OPERATOR = {
 }
 
 BOOL_STRING = {
+    "Name" : "BOOL_STRING",
     "AcceptedStates": {
         "T1": "BOOL",
         "T2": "BOOL",
@@ -185,6 +174,7 @@ BOOL_STRING = {
 }
 
 IDENTIFIER = {
+    "Name" : "IDENTIFIER",
     "AcceptedStates": {
         "T1": "ID",
         "T2": "ID",
@@ -287,126 +277,6 @@ if __name__=="__main__":
                         dfa.Reset()
 
 
-
-
-
-#-연산자 hidden problem
-
-# 숫자 삽질하다가 날린 코드들 ~~
-                # prev_index=index-1
-
-                # prev_is_digit=None
-                # if prev_index >=0 :
-                #     prev_is_digit = check_prev_input(inputString[prev_index])
-                # prev_is_digit = check_prev_input(inputString[index])
-
-# dfd 400줄 정도 나오겠다 으아아
-
-# if __name__=="__main__":
-#     f = open("./lexical/temp.txt", 'r')
-#     inputString = f.read()
-#     f.close()
-
-#     # int, char, boolean, string, if, else, while, class, return
-#     # true, false,  ==, !=, <=, >=, \t, \n
-
-#     # 우선순위 순으로 포함시켜야함 ! ex. keyword랑 identifier
-#     # transition_table=[ARITHMETIC_OPERATOR,SIGN_INTEGER,IDENTIFIER,BRACE,BRACKET,COMPARISON,WHITESPACE,BOOL_STRING]
-#     transition_table=[SIGN_INTEGER]
-
-#     temp_getToken = "" # 임시적으로 토큰이름을 저장해두는 변수
-#     temp_input_char = [] # 임시적으로 입력된 단일 문자를 저장해두는 리스트
-
-#     for input_char in inputString :
-
-#         for i in range(0,len(transition_table)):
-#             dfa = FiniteAutomaton()
-#             dfa.LoadTransitionTable(transition_table[i])
-
-#             original_input_char =input_char
-
-#             index=inputString.find(input_char)
-#             prev_index=index-1
-            
-#             if prev_index >= 0 :
-#                 prev_input_char = inputString[index-1]
-#                 input_char = check_prev_is_digit(original_input_char, prev_input_char)
-
-#             else :
-#                 input_char = check_prev_is_digit(input_char)
-                
-
-#             if dfa.PeekNextState(input_char)=="Unknown":
-#                 dfa.Reset()
-
-#             else :
-#                 nextState = dfa.PeekNextState(input_char)
-#                 print("1",dfa.GetState())
-#                 dfa.SetState(nextState)
-                
-#                 print("=",nextState)
-                
-#                 if dfa.IsAccepted():
-#                     # 현재도 accept token이지만 남은 input symbol이 있는지 확인하는 과정 (중요)
-#                     # 그다음 symbol을 입력받았을때(next_index변수 확인) accept한 경우엔 temp_input_char에 append해줌 (list추가) 
-#                     # 좀 자잘한 조건들이 있어서 if문이 많음 ㅇㅅㅇ..
-#                     next_index=index+1
-#                     next_input_char = inputString[next_index]
-
-#                     stored_next_input_char = next_input_char
-#                     next_input_char = check_prev_is_digit(next_input_char, original_input_char)
-                    
-#                     # 나중에 최적화하기
-#                     if next_index <= len(inputString) :
-
-#                         # def check_prev_is_digit(prev_input_char, input_char):
-#                         peekNextState = dfa.PeekNextState(next_input_char)
-
-#                         if next_index == len(inputString) :
-#                             if temp_getToken !="" :
-#                                 print("<",temp_getToken,",",''.join(temp_input_char)+input_char,">,")
-#                                 # dfa.TempReset()
-#                                 temp_getToken="" #초기화
-#                                 temp_input_char=[] #초기화
-#                                 dfa.Reset()
-#                             else :
-#                                 print("< "+dfa.GetToken()+","+input_char+" >,")
-#                                 dfa.Reset()
-
-#                         elif peekNextState =='Rejected':
-#                             print("< "+dfa.GetToken()+","+input_char+" >,")
-#                             dfa.Reset()
-#                             break
-#                         # print("1",dfa.GetState())
-#                         elif peekNextState =='Unknown':
-#                             if dfa.GetToken()=="WHITESPACE":
-#                                 break
-
-#                             if temp_getToken !="" :
-#                                 print("<",temp_getToken,",",''.join(temp_input_char)+input_char,">,")
-#                                 temp_getToken="" #초기화
-#                                 temp_input_char=[] #초기화
-#                                 dfa.Reset()
-#                             else :
-#                                 print("< "+dfa.GetToken()+","+input_char+" >,")
-#                                 dfa.Reset()
-#                                 break
-                        
-#                         else :
-#                             print("1",dfa.GetState())
-#                             temp_getToken=dfa.GetToken() #T2
-#                             temp_input_char.append(input_char) #1,
-
-#                 else :
-#                     if temp_getToken !="" :
-#                         print("<",''.join(temp_input_char)+input_char,",",temp_input_char,">,")
-#                         temp_getToken="" #초기화
-#                         temp_input_char=[] #초기화
-#                         dfa.Reset()
-#                     else :
-#                         dfa.Reset()
-
-#             print("+++++++++++")
 
 
 
