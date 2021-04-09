@@ -5,7 +5,6 @@ class FiniteAutomaton:
         self.acceptedStates = {}
         self.tableName = {}
 
-
     def LoadTransitionTable(self, _dfa):
         self.table = _dfa["Table"]
         self.acceptedStates=_dfa["AcceptedStates"]
@@ -22,7 +21,7 @@ class FiniteAutomaton:
         #         _input='EXCEPT_ZERO'
         #         # _input='DIGIT'
                     
-        if _input.isalpha() and len(_input)==1 and self.GetTableName()=='IDENTIFIER' :
+        if _input.isalpha() and self.GetTableName()=='IDENTIFIER' :
             _input='LETTER'
         
 
@@ -188,6 +187,7 @@ IDENTIFIER = {
         "T2": {"LETTER": "T3", "_": "T4", "DIGIT": "T5" },
         "T3": {"LETTER": "T3", "_": "T4", "DIGIT": "T5" },
         "T4": {"LETTER": "T3", "_": "T4", "DIGIT": "T5" },
+        "T5": {"LETTER": "T3", "_": "T4", "DIGIT": "T5" },
     }
 }
 
