@@ -20,12 +20,16 @@ class FiniteAutomaton:
         #     else :
         #         _input='EXCEPT_ZERO'
         #         # _input='DIGIT'
-        # 숫자 아직 하는 중..
-                    
+        # 숫자 아직 하는 중..                  
+
         if _input.isalpha() and self.GetTableName()=='IDENTIFIER' :
-            # 혜지양 조건문에 self.GetTableName== single_character or literal_string 추가해야할듯?!?
             _input='LETTER'
-        
+
+        if _input.isalpha() and self.GetTableName()=='SINGLE_CHARACTER' :
+           _input='LETTER'
+
+        if _input.isalpha() and self.GetTableName()=='LITERAL_STRING' :
+            _input='LETTER' 
 
         if not _input in self.table[self.currentState]:
             return "Unknown"
@@ -59,6 +63,10 @@ class FiniteAutomaton:
     def Reset(self):
         self.currentState = "T0"
  
+# Defind tokens
+IF = ['if', 'IF']
+INT = ['int', 'INT']
+
 # Transition Table of each token's DFA
 COMPARISON = {
     "Name" : "COMPARISON",
@@ -209,10 +217,10 @@ IDENTIFIER = {
 VARIABLE_TYPE = {
     "Name" : "VARIABLE_TYPE",
     "AcceptedStates": {
-        "T1": "VT",
-        "T2": "VT",
-        "T3": "VT",
-        "T4": "VT",
+        "T1": "VTYPE",
+        "T2": "VTYPE",
+        "T3": "VTYPE",
+        "T4": "VTYPE",
     },
     "Table": {
         "T0": {"int": "T1", "char": "T2", "boolean": "T3", "string":"T4" },
@@ -273,10 +281,10 @@ KEYWORD = {
     }
 }
 
-ASSIGNMENT= {
-    "Name" : "ASSIGNMENT",
+ASSIGN= {
+    "Name" : "ASSIGN",
     "AcceptedStates": {
-        "T1": "ASSIGNMENT",
+        "T1": "ASSIGN",
     },
     "Table": {
         "T0": {"=": "T1"},
@@ -284,10 +292,10 @@ ASSIGNMENT= {
     }
 }
 
-TERMINATE= {
-    "Name" : "TERMINATE",
+SEMI= {
+    "Name" : "SEMI",
     "AcceptedStates": {
-        "T1": "TERMINATE",
+        "T1": "SEMI",
     },
     "Table": {
         "T0": {";": "T1"},
@@ -306,13 +314,24 @@ SEPARATE= {
     }
 }
 
+DAOM= {
+    "Name" : "DAOM",
+    "AcceptedStates": {
+        "T1": "DAOM",
+    },
+    "Table": {
+        "T0": {"'": "T1"},
+        "T1": {"'": ""},
+    }
+}
+
 if __name__=="__main__":
     f = open("./lexical/temp.txt", 'r')
     inputString = f.read()
     f.close()
     
     # 우선순위 순으로 포함시켜야함 ! ex. keyword랑 identifier
-    transition_table=[ARITHMETIC_OPERATOR,SIGN_INTEGER,IDENTIFIER,SINGLE_CHARACTER,BRACE,PAREN,BRACKET,COMPARISON,WHITESPACE,BOOL_STRING,SEPARATE,TERMINATE,ASSIGNMENT]
+    transition_table=[DAOM,ARITHMETIC_OPERATOR,SIGN_INTEGER,SINGLE_CHARACTER,VARIABLE_TYPE,IDENTIFIER,BRACE,PAREN,BRACKET,COMPARISON,WHITESPACE,BOOL_STRING,SEPARATE,SEMI,ASSIGN]
 
     temp_getToken = "" # 임시적으로 토큰이름을 저장해두는 변수
     temp_input_char = [] # 임시적으로 입력된 단일 문자를 저장해두는 리스트
@@ -332,7 +351,8 @@ if __name__=="__main__":
                 
                 nextState = dfa.PeekNextState(input_char)
                 dfa.SetState(nextState)
-                
+
+
                 if dfa.IsAccepted():
                     # 현재도 accept token이지만 남은 input symbol이 있는지 확인하는 과정 (중요)
                     # 그다음 symbol을 입력받았을때(next_index변수 확인) accept한 경우엔 temp_input_char에 append해줌 (list추가) 
