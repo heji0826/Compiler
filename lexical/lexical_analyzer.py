@@ -109,9 +109,9 @@ BRACE = {
         "T2": "RBRACE",
     },
     "Table": {
-        "T0": {"(": "T1", ")": "T2" },
-        "T1": {"(": "",   ")": "",  },
-        "T2": {"(": "",   ")": "",  },
+        "T0": {"{": "T1", "}": "T2" },
+        "T1": {"{": "",   "}": "",  },
+        "T2": {"{": "",   "}": "",  },
     }
 }
 
@@ -122,9 +122,9 @@ PAREN = {
         "T2": "RPAREN",
     },
     "Table": {
-        "T0": {"{": "T1", "}": "T2" },
-        "T1": {"{": "",   "}": "",  },
-        "T2": {"{": "",   "}": "",  },
+        "T0": {"(": "T1", ")": "T2" },
+        "T1": {"(": "",   ")": "",  },
+        "T2": {"(": "",   ")": "",  },
     }
 }
 
@@ -229,13 +229,13 @@ SINGLE_CHARACTER = {
         "T6": "SINGLE",
     },
     "Table": {
-        "T0": {"\'": "T1", "DIGIT": "", "LETTER": "", "SYMBOL":"", "BLANK":"" },
-        "T1": {"\'": "", "DIGIT": "T2", "LETTER": "T3", "SYMBOL":"T4", "BLANK":"T5" },
-        "T2": {"\'": "T6", "DIGIT": "", "LETTER": "", "SYMBOL":"", "BLANK":"" },
-        "T3": {"\'": "T6", "DIGIT": "", "LETTER": "", "SYMBOL":"", "BLANK":"" },
-        "T4": {"\'": "T6", "DIGIT": "", "LETTER": "", "SYMBOL":"", "BLANK":"" },
-        "T5": {"\'": "T6", "DIGIT": "", "LETTER": "", "SYMBOL":"", "BLANK":"" },
-        "T6": {"\'": "", "DIGIT": "", "LETTER": "", "SYMBOL":"", "BLANK":"" },
+        "T0": {"'": "T1", "DIGIT": "", "LETTER": "", "SYMBOL":"", "BLANK":"" },
+        "T1": {"'": "", "DIGIT": "T2", "LETTER": "T3", "SYMBOL":"T4", "BLANK":"T5" },
+        "T2": {"'": "T6", "DIGIT": "", "LETTER": "", "SYMBOL":"", "BLANK":"" },
+        "T3": {"'": "T6", "DIGIT": "", "LETTER": "", "SYMBOL":"", "BLANK":"" },
+        "T4": {"'": "T6", "DIGIT": "", "LETTER": "", "SYMBOL":"", "BLANK":"" },
+        "T5": {"'": "T6", "DIGIT": "", "LETTER": "", "SYMBOL":"", "BLANK":"" },
+        "T6": {"'": "", "DIGIT": "", "LETTER": "", "SYMBOL":"", "BLANK":"" },
     }
 }
 
@@ -245,31 +245,12 @@ LITERAL_STRING = {
         "T5": "LITERAL",
     },
     "Table": {
-        "T0": {"\"": "T1", "DIGIT": "", "LETTER": "", "BLANK":"" },
-        "T1": {"\"": "T5", "DIGIT": "T3", "LETTER": "T2", "BLANK":"T4" },
-        "T2": {"\"": "T5", "DIGIT": "T3", "LETTER": "T2", "BLANK":"T4" },
-        "T3": {"\"": "T5", "DIGIT": "T3", "LETTER": "T2", "BLANK":"T4" },
-        "T4": {"\"": "T5", "DIGIT": "T3", "LETTER": "T2", "BLANK":"T4" },
-        "T5": {"\"": "", "DIGIT": "", "LETTER": "", "BLANK":"" },
-    }
-}
-
-KEYWORD = {
-    "Name" : "KEYWORD",
-    "AcceptedStates": {
-        "T1": "KEYWORD",
-        "T2": "KEYWORD",
-        "T3": "KEYWORD",
-        "T4": "KEYWORD",
-        "T5": "KEYWORD",
-    },
-    "Table": {
-        "T0": {"if": "T1", "else": "T2", "while": "T3", "class":"T4", "return":"T5" },
-        "T1": {"if": "", "else": "", "while": "", "class":"", "return":"" },
-        "T2": {"if": "", "else": "", "while": "", "class":"", "return":"" },
-        "T3": {"if": "", "else": "", "while": "", "class":"", "return":"" },
-        "T4": {"if": "", "else": "", "while": "", "class":"", "return":"" },
-        "T5": {"if": "", "else": "", "while": "", "class":"", "return":"" },
+        "T0": {""": "T1", "DIGIT": "", "LETTER": "", "BLANK":"" },
+        "T1": {""": "T5", "DIGIT": "T3", "LETTER": "T2", "BLANK":"T4" },
+        "T2": {""": "T5", "DIGIT": "T3", "LETTER": "T2", "BLANK":"T4" },
+        "T3": {""": "T5", "DIGIT": "T3", "LETTER": "T2", "BLANK":"T4" },
+        "T4": {""": "T5", "DIGIT": "T3", "LETTER": "T2", "BLANK":"T4" },
+        "T5": {""": "", "DIGIT": "", "LETTER": "", "BLANK":"" },
     }
 }
 
@@ -331,7 +312,7 @@ if __name__=="__main__":
     f.close()
     
     # 우선순위 순으로 포함시켜야함 ! ex. keyword랑 identifier
-    transition_table=[ARITHMETIC_OPERATOR,SIGN_INTEGER,IDENTIFIER,BRACE,BRACKET,COMPARISON,WHITESPACE,BOOL_STRING]
+    transition_table=[ARITHMETIC_OPERATOR,SIGN_INTEGER,IDENTIFIER,SINGLE_CHARACTER,BRACE,PAREN,BRACKET,COMPARISON,WHITESPACE,BOOL_STRING,SEPARATE,TERMINATE,ASSIGNMENT]
 
     temp_getToken = "" # 임시적으로 토큰이름을 저장해두는 변수
     temp_input_char = [] # 임시적으로 입력된 단일 문자를 저장해두는 리스트
