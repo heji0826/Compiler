@@ -1,9 +1,11 @@
+from dfa_tables import ARITHMETIC_OPERATOR,SIGN_INTEGER,IDENTIFIER,BRACE,LITERAL_STRING,SINGLE_CHARACTER,PAREN,BRACKET,WHITESPACE,SEPARATE,SEMI,ASSIGN,BOOL_STRING,VARIABLE_TYPE,KEYWORD
+
 class FiniteAutomaton:
     def __init__(self):
         self.table = {}
         self.currentState = "T0"
         self.acceptedStates = {}
-        self.tableName = {}
+        self.tableName = ""
 
     def LoadTransitionTable(self, _dfa):
         self.table = _dfa["Table"]
@@ -13,37 +15,35 @@ class FiniteAutomaton:
     def GetTableName(self):
         return self.tableName
  
-    def PeekNextState(self, _input):
-        # if _input.isdigit():
-        #     if _input=='0':
-        #         _input='DIGIT'
-        #     else :
-        #         _input='EXCEPT_ZERO'
-        #         # _input='DIGIT'
-        # 숫자 아직 하는 중..                  
-
+    def PeekNextState(self, _input): 
+        # table에 input 들어가기전에 input 형태 변경해주기     
         if _input.isalpha() and self.GetTableName()=='IDENTIFIER' :
             _input='LETTER'
 
-        if _input.isalpha() and self.GetTableName()=='SINGLE_CHARACTER' :
+        elif _input.isalpha() and self.GetTableName()=='SINGLE_CHARACTER' :
            _input='LETTER'
 
-        if _input.isalpha() and self.GetTableName()=='LITERAL_STRING' :
+        elif _input.isalpha() and self.GetTableName()=='LITERAL_STRING' :
             _input='LETTER' 
 
-        if not _input in self.table[self.currentState]:
+
+        # 현재 T4인데 첫 transition에 애초에 T4가 없는경우엔 바로 빠져나가야해
+        if not self.currentState in self.table:
             return "Unknown"
+        else :
+            if not _input in self.table[self.currentState]:
+                return "Unknown"
         
         nextState = self.table[self.currentState][_input]
 
         if nextState == "":
             return "Rejected"
+
         else:
             return nextState
     
     def GetState(self):
         return self.currentState
-        # 필요없을듯
  
     def SetState(self, _state):
         self.currentState = _state
@@ -59,346 +59,119 @@ class FiniteAutomaton:
             return True
         else:
             return False
+
+    def temp_IsAccepted(self,temp_currentState):
+        if temp_currentState in self.acceptedStates:
+            return True
+        else:
+            return False
  
     def Reset(self):
         self.currentState = "T0"
  
-# Defind tokens
-IF = ['if', 'IF']
-INT = ['int', 'INT']
-
-# Transition Table of each token's DFA
-COMPARISON = {
-    "Name" : "COMPARISON",
-    "AcceptedStates": {
-        "T1": "COMPARISON",
-        "T2": "COMPARISON",
-        "T3": "COMPARISON",
-        "T4": "COMPARISON",
-        "T5": "COMPARISON",
-        "T6": "COMPARISON",
-    },
-    "Table": {
-        "T0": {">": "T1", "<": "T2", "==": "T3", "!=": "T4", ">=":"T5", "<=":"T6" },
-        "T1": {">": "",   "<": "",   "==": "",   "!=": "",   ">=":"",   "<=":""  },
-        "T2": {">": "",   "<": "",   "==": "",   "!=": "",   ">=":"",   "<=":""  },
-        "T3": {">": "",   "<": "",   "==": "",   "!=": "",   ">=":"",   "<=":""  },
-        "T4": {">": "",   "<": "",   "==": "",   "!=": "",   ">=":"",   "<=":""  },
-        "T5": {">": "",   "<": "",   "==": "",   "!=": "",   ">=":"",   "<=":""  },
-        "T6": {">": "",   "<": "",   "==": "",   "!=": "",   ">=":"",   "<=":""  },
-    }
-}
-
-
-SIGN_INTEGER = {
-    "Name" : "SIGN_INTEGER",
-    "AcceptedStates": {
-        "T2": "INTEGER",
-        "T3": "INTEGER",
-        "T4": "INTEGER",
-        "T5": "INTEGER",
-        "T6": "INTEGER",
-    },
-    "Table": {
-        "T0": {"-": "T1", "EXCEPT_ZERO": "T2", "DIGIT": "",   "0": "T3"},
-        "T1": {"-": "",   "EXCEPT_ZERO": "T4", "DIGIT": "",   "0": ""  },
-        "T2": {"-": "",   "EXCEPT_ZERO": "",   "DIGIT": "T5", "0": ""  },
-        "T3": {"-": "",   "EXCEPT_ZERO": "",   "DIGIT": "",   "0": ""  },
-        "T4": {"-": "",   "EXCEPT_ZERO": "",   "DIGIT": "T6", "0": ""  },
-        "T5": {"-": "",   "EXCEPT_ZERO": "",   "DIGIT": "T5", "0": ""  },
-        "T6": {"-": "",   "EXCEPT_ZERO": "",   "DIGIT": "T6", "0": ""  },
-    }
-}
-
-BRACE = {
-    "Name" : "BRACE",
-    "AcceptedStates": {
-        "T1": "LBRACE",
-        "T2": "RBRACE",
-    },
-    "Table": {
-        "T0": {"{": "T1", "}": "T2" },
-        "T1": {"{": "",   "}": "",  },
-        "T2": {"{": "",   "}": "",  },
-    }
-}
-
-PAREN = {
-    "Name" : "PAREN",
-    "AcceptedStates": {
-        "T1": "LPAREN",
-        "T2": "RPAREN",
-    },
-    "Table": {
-        "T0": {"(": "T1", ")": "T2" },
-        "T1": {"(": "",   ")": "",  },
-        "T2": {"(": "",   ")": "",  },
-    }
-}
-
-BRACKET= {
-    "Name" : "BRACKET",
-    "AcceptedStates": {
-        "T1": "LBRACKET",
-        "T2": "RBRACKET",
-    },
-    "Table": {
-        "T0": {"[": "T1", "]": "T2" },
-        "T1": {"[": "",   "]": "",  },
-        "T2": {"[": "",   "]": "",  },
-    }
-}
-
-WHITESPACE= {
-    "Name" : "WHITESPACE",
-    "AcceptedStates": {
-        "T1": "WHITESPACE",
-        "T2": "WHITESPACE",
-        "T3": "WHITESPACE",
-    },
-    "Table": {
-        "T0": {"\t": "T1", "\n": "T2", " ":"T3" },
-        "T1": {"\t": "",   "\n": "",   " ":"T3" },
-        "T2": {"\t": "",   "\n": "",   " ":"T3" },
-        "T3": {"\t": "",   "\n": "",   " ":"T3" },
-    }
-}
-
-
-ARITHMETIC_OPERATOR = {
-    "Name" : "ARITHMETIC_OPERATOR",
-    "AcceptedStates": {
-        "T1": "OP",
-        "T2": "OP",
-        "T3": "OP",
-        "T4": "OP",
-    },
-    "Table": {
-        "T0": {"+": "T1", "-": "T2", "*": "T3", "/": "T4"},
-        "T1": {"+": "",   "-": "",   "*": "",   "/": ""  },
-        "T2": {"+": "",   "-": "",   "*": "",   "/": ""  },
-        "T3": {"+": "",   "-": "",   "*": "",   "/": ""  },
-        "T4": {"+": "",   "-": "",   "*": "",   "/": ""  },
-    }
-}
-
-BOOL_STRING = {
-    "Name" : "BOOL_STRING",
-    "AcceptedStates": {
-        "T1": "BOOL",
-        "T2": "BOOL",
-    },
-    "Table": {
-        "T0": {"true": "T1", "false": "T2" },
-        "T1": {"true": "",   "false": "",  },
-        "T2": {"true": "",   "false": "",  },
-    }
-}
-
-IDENTIFIER = {
-    "Name" : "IDENTIFIER",
-    "AcceptedStates": {
-        "T1": "ID",
-        "T2": "ID",
-        "T3": "ID",
-        "T4": "ID",
-        "T5": "ID",
-    },
-    "Table": {
-        "T0": {"LETTER": "T1", "_": "T2", "DIGIT": "" },
-        "T1": {"LETTER": "T3", "_": "T4", "DIGIT": "T5" },
-        "T2": {"LETTER": "T3", "_": "T4", "DIGIT": "T5" },
-        "T3": {"LETTER": "T3", "_": "T4", "DIGIT": "T5" },
-        "T4": {"LETTER": "T3", "_": "T4", "DIGIT": "T5" },
-        "T5": {"LETTER": "T3", "_": "T4", "DIGIT": "T5" },
-    }
-}
-
-VARIABLE_TYPE = {
-    "Name" : "VARIABLE_TYPE",
-    "AcceptedStates": {
-        "T1": "VTYPE",
-        "T2": "VTYPE",
-        "T3": "VTYPE",
-        "T4": "VTYPE",
-    },
-    "Table": {
-        "T0": {"int": "T1", "char": "T2", "boolean": "T3", "string":"T4" },
-        "T1": {"int": "", "char": "", "boolean": "", "string":"" },
-        "T2": {"int": "", "char": "", "boolean": "", "string":"" },
-        "T3": {"int": "", "char": "", "boolean": "", "string":"" },
-        "T4": {"int": "", "char": "", "boolean": "", "string":"" },
-    }
-}
-
-SINGLE_CHARACTER = {
-    "Name" : "SINGLE_CHARACTER",
-    "AcceptedStates": {
-        "T6": "SINGLE",
-    },
-    "Table": {
-        "T0": {"'": "T1", "DIGIT": "", "LETTER": "", "SYMBOL":"", "BLANK":"" },
-        "T1": {"'": "", "DIGIT": "T2", "LETTER": "T3", "SYMBOL":"T4", "BLANK":"T5" },
-        "T2": {"'": "T6", "DIGIT": "", "LETTER": "", "SYMBOL":"", "BLANK":"" },
-        "T3": {"'": "T6", "DIGIT": "", "LETTER": "", "SYMBOL":"", "BLANK":"" },
-        "T4": {"'": "T6", "DIGIT": "", "LETTER": "", "SYMBOL":"", "BLANK":"" },
-        "T5": {"'": "T6", "DIGIT": "", "LETTER": "", "SYMBOL":"", "BLANK":"" },
-        "T6": {"'": "", "DIGIT": "", "LETTER": "", "SYMBOL":"", "BLANK":"" },
-    }
-}
-
-LITERAL_STRING = {
-    "Name" : "LITERAL_STRING",
-    "AcceptedStates": {
-        "T5": "LITERAL",
-    },
-    "Table": {
-        "T0": {""": "T1", "DIGIT": "", "LETTER": "", "BLANK":"" },
-        "T1": {""": "T5", "DIGIT": "T3", "LETTER": "T2", "BLANK":"T4" },
-        "T2": {""": "T5", "DIGIT": "T3", "LETTER": "T2", "BLANK":"T4" },
-        "T3": {""": "T5", "DIGIT": "T3", "LETTER": "T2", "BLANK":"T4" },
-        "T4": {""": "T5", "DIGIT": "T3", "LETTER": "T2", "BLANK":"T4" },
-        "T5": {""": "", "DIGIT": "", "LETTER": "", "BLANK":"" },
-    }
-}
-
-KEYWORD = {
-    "Name" : "KEYWORD",
-    "AcceptedStates": {
-        "T1": "KEYWORD",
-        "T2": "KEYWORD",
-        "T3": "KEYWORD",
-        "T4": "KEYWORD",
-        "T5": "KEYWORD",
-    },
-    "Table": {
-        "T0": {"if": "T1", "else": "T2", "while": "T3", "class":"T4", "return":"T5" },
-        "T1": {"if": "", "else": "", "while": "", "class":"", "return":"" },
-        "T2": {"if": "", "else": "", "while": "", "class":"", "return":"" },
-        "T3": {"if": "", "else": "", "while": "", "class":"", "return":"" },
-        "T4": {"if": "", "else": "", "while": "", "class":"", "return":"" },
-        "T5": {"if": "", "else": "", "while": "", "class":"", "return":"" },
-    }
-}
-
-ASSIGN= {
-    "Name" : "ASSIGN",
-    "AcceptedStates": {
-        "T1": "ASSIGN",
-    },
-    "Table": {
-        "T0": {"=": "T1"},
-        "T1": {"=": ""},
-    }
-}
-
-SEMI= {
-    "Name" : "SEMI",
-    "AcceptedStates": {
-        "T1": "SEMI",
-    },
-    "Table": {
-        "T0": {";": "T1"},
-        "T1": {";": ""},
-    }
-}
-
-SEPARATE= {
-    "Name" : "SEPARATE",
-    "AcceptedStates": {
-        "T1": "SEPARATE",
-    },
-    "Table": {
-        "T0": {",": "T1"},
-        "T1": {",": ""},
-    }
-}
-
-DAOM= {
-    "Name" : "DAOM",
-    "AcceptedStates": {
-        "T1": "DAOM",
-    },
-    "Table": {
-        "T0": {"'": "T1"},
-        "T1": {"'": ""},
-    }
-}
 
 if __name__=="__main__":
-    f = open("./lexical/temp.txt", 'r')
+    f = open("./lexical/input.txt", 'r')
     inputString = f.read()
     f.close()
-    
-    # 우선순위 순으로 포함시켜야함 ! ex. keyword랑 identifier
-    transition_table=[DAOM,ARITHMETIC_OPERATOR,SIGN_INTEGER,SINGLE_CHARACTER,VARIABLE_TYPE,IDENTIFIER,BRACE,PAREN,BRACKET,COMPARISON,WHITESPACE,BOOL_STRING,SEPARATE,SEMI,ASSIGN]
+    # 우선순위 순으로 포함시켜야함 ! 
+    transition_table_1=[ARITHMETIC_OPERATOR,LITERAL_STRING,SINGLE_CHARACTER,SIGN_INTEGER,IDENTIFIER,BRACE,PAREN,BRACKET,WHITESPACE,SEPARATE,SEMI,ASSIGN]
 
-    temp_getToken = "" # 임시적으로 토큰이름을 저장해두는 변수
-    temp_input_char = [] # 임시적으로 입력된 단일 문자를 저장해두는 리스트
+    # COMPARISON
+    transition_table_2=[BOOL_STRING,VARIABLE_TYPE,KEYWORD]
 
-    for input_char in inputString :
-        for i in range(0,len(transition_table)):
-            dfa = FiniteAutomaton()
-            dfa.LoadTransitionTable(transition_table[i])
-            
-            index=inputString.find(input_char)
+    dfa = FiniteAutomaton()
 
-            if dfa.PeekNextState(input_char)=="Unknown":
-                dfa.Reset()
+    temp_input_char = []
+    temp_getTableName = ""
+
+    for index, input_char in enumerate(inputString) :
+        for i in range(0,len(transition_table_1)):
+            dfa.LoadTransitionTable(transition_table_1[i])
+
+            if temp_getTableName != "":
+                if dfa.GetTableName()==temp_getTableName:
+                   
+                    nextState = dfa.PeekNextState(input_char)
+                    dfa.SetState(nextState)
+
+                    if dfa.IsAccepted():
+                        next_index=index+1
+                        next_input_state = dfa.PeekNextState(inputString[next_index])
+
+                        if next_input_state != 'Unknown' and next_input_state != 'Rejected':
+                            temp_input_char.append(input_char)
+                            temp_getTableName = dfa.GetTableName()
+                            break
+                        else:
+                            temp_input_char.append(input_char)
+                            str_temp_input_char=''.join(temp_input_char)
+
+                            if dfa.GetTableName() == 'IDENTIFIER':
+                                change_dfa = FiniteAutomaton()
+                                is_identifier=0
+                                for i in range(0,len(transition_table_2)):
+                                    change_dfa.LoadTransitionTable(transition_table_2[i])
+                                    
+                                    if change_dfa.PeekNextState(str_temp_input_char)=="Unknown" :
+                                        is_identifier=is_identifier+1
+                                        if is_identifier==3:
+                                            print("<",dfa.GetToken(),",",str_temp_input_char,">,")
+                                        else:
+                                            continue
+                                    else :
+                                        nextState = change_dfa.PeekNextState(str_temp_input_char)
+                                        change_dfa.SetState(nextState)
+                                        if change_dfa.IsAccepted():
+                                            print("<",change_dfa.GetToken(),",",str_temp_input_char,">,")
+                                            break 
+                            else :
+                                print("<",dfa.GetToken(),",",str_temp_input_char,">,")
+                            
+                            temp_input_char = [] #초기화
+                            temp_getTableName = "" #초기화
+                            change_dfa.Reset()
+                            dfa.Reset()
+                            break
+                else:
+                    #if123같은 것들이 들어오는 경우에 해당하는 조건
+                    continue
 
             else :
-                index=inputString.find(input_char)
                 
-                nextState = dfa.PeekNextState(input_char)
-                dfa.SetState(nextState)
-
-
-                if dfa.IsAccepted():
-                    # 현재도 accept token이지만 남은 input symbol이 있는지 확인하는 과정 (중요)
-                    # 그다음 symbol을 입력받았을때(next_index변수 확인) accept한 경우엔 temp_input_char에 append해줌 (list추가) 
-
-                    next_index=index+1
-
-                    if next_index < len(inputString) :
-
-                        peekNextState = dfa.PeekNextState(inputString[next_index])
-                        
-                        if peekNextState =='Rejected' or peekNextState =='Unknown' :
-                            if dfa.GetToken()=="WHITESPACE":
-                                pass
-                            elif temp_getToken !="" :
-                                print("<",temp_getToken,",",''.join(temp_input_char)+input_char,">,")
-                                temp_getToken="" #초기화
-                                temp_input_char=[] #초기화
-                                dfa.Reset()
-                            else :
-                                print("< "+dfa.GetToken()+","+input_char+" >,")
-                                dfa.Reset()
-                        
-                        else :
-                            temp_getToken=dfa.GetToken() 
-                            temp_input_char.append(input_char) 
-
-                        break
-                    
-                    else :
-                        if temp_getToken !="" :
-                            print("<",temp_getToken,",",''.join(temp_input_char)+input_char,">,")
-                            temp_getToken="" #초기화
-                            temp_input_char=[] #초기화
-                            dfa.Reset()
-                        else :
-                            print("< "+dfa.GetToken()+","+input_char+" >,")
-                            dfa.Reset()
-                else :
-                    if temp_getToken !="" :
-                        print("<",''.join(temp_input_char)+input_char,",",temp_input_char,">,")
-                        temp_getToken="" #초기화
-                        temp_input_char=[] #초기화
+                if dfa.PeekNextState(input_char)=="Unknown" :
                     dfa.Reset()
 
+                else :
+                    
+                    nextState = dfa.PeekNextState(input_char)
+                    dfa.SetState(nextState)
+
+                    if dfa.IsAccepted():
+                        next_index=index+1
+                        
+                        try:
+                            next_input_state = dfa.PeekNextState(inputString[next_index])
+                            if next_input_state != 'Unknown' and next_input_state != 'Rejected':
+                                temp_input_char.append(input_char)
+                                temp_getTableName = dfa.GetTableName()
+                                break
+                            else:
+                                if dfa.GetToken()=="WHITESPACE":
+                                    dfa.Reset()
+                                    break
+                                else :
+                                    print("<",dfa.GetToken(),",",input_char,">,")
+                                    dfa.Reset()
+                                    break
+                        except IndexError:
+                            if dfa.GetToken()=="WHITESPACE":
+                                    dfa.Reset()
+                                    break
+                            else:
+                                print("<",dfa.GetToken(),",",input_char,">,")
 
 
 
-
-#-연산자 hidden problem
+                     
+   
