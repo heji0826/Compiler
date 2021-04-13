@@ -1,5 +1,12 @@
 from dfa_tables import ARITHMETIC_OPERATOR,SIGN_INTEGER,IDENTIFIER,BRACE,LITERAL_STRING,SINGLE_CHARACTER,PAREN,BRACKET,WHITESPACE,SEPARATE,SEMI,ASSIGN,BOOL_STRING,VARIABLE_TYPE,KEYWORD
 
+def handling_integer():
+    # temp에 넣어진 값과, 현재 진행중인 그 토큰 이름을 파라미터로 받아서
+    # 이게 zero인지,, 사실 제로면 바로 끝내야함
+    # 아니면 except_zero인지,,, digit인지 확인해서 .. 바로 peekNextState에 넣어버리자!
+    pass
+
+
 class FiniteAutomaton:
     def __init__(self):
         self.table = {}
@@ -75,7 +82,7 @@ if __name__=="__main__":
     inputString = f.read()
     f.close()
     # 우선순위 순으로 포함시켜야함 ! 
-    transition_table_1=[ARITHMETIC_OPERATOR,IDENTIFIER,SIGN_INTEGER,BRACE,PAREN,BRACKET,WHITESPACE,SEPARATE,SEMI,ASSIGN]
+    transition_table_1=[ARITHMETIC_OPERATOR,SIGN_INTEGER,IDENTIFIER,BRACE,PAREN,BRACKET,WHITESPACE,SEPARATE,SEMI,ASSIGN]
     # ,LITERAL_STRING,SINGLE_CHARACTER
     # COMPARISON
     transition_table_2=[BOOL_STRING,VARIABLE_TYPE,KEYWORD]
