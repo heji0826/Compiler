@@ -221,8 +221,6 @@ if __name__=="__main__":
                             # - 뒤 숫자가 올 경우
                                 if next_input_char.isdigit():
                                     pos = len(state)
-                                    #while state[pos] in WHITESPACE:
-                                        #pos -= 1
                                     if pos == 0:
                                         temp_input_char.append(input_char)
                                         temp_getTableName = dfa.GetTableName()
@@ -232,11 +230,7 @@ if __name__=="__main__":
                                     else:
                                         temp_input_char.append(input_char)
                                         temp_getTableName = "SIGN_INTEGER"
-                                        if next_input_char.isdigit():
-                                            next_input_char="DIGIT"
-                                            break
-                                        else :
-                                            break
+                                        break
                                                                             
                             # - 뒤 숫자가 오지 않을 경우 -> OP로 처리   
                             if next_input_state != 'Unknown' and next_input_state != 'Rejected':
