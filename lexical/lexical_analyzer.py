@@ -91,17 +91,15 @@ if __name__=="__main__":
 
     temp_input_char = []
     temp_getTableName = ""
-    
+    state = []
 
     for index, input_char in enumerate(inputString) :
         for i in range(0,len(transition_table_1)):
             dfa.LoadTransitionTable(transition_table_1[i])
+            if temp_getTableName != "": 
 
-            if temp_getTableName != "":
-                
                 if input_char.isdigit():
-                    input_char="DIGIT"
-
+                    input_char="DIGIT"                
                 if dfa.GetTableName()==temp_getTableName:
                     nextState = dfa.PeekNextState(input_char)
                     dfa.SetState(nextState)
@@ -109,7 +107,6 @@ if __name__=="__main__":
                     if dfa.IsAccepted():
                         next_index=index+1
                         next_input_char = inputString[next_index]
-                        
                         if next_input_char.isdigit():
                             next_input_char="DIGIT"
 
@@ -139,6 +136,7 @@ if __name__=="__main__":
                                         is_identifier=is_identifier+1
                                         if is_identifier==3:
                                             print("<",dfa.GetToken(),",",str_temp_input_char,">,")
+                                            state.append(dfa.GetToken())
                                         else:
                                             continue
                                     else :
@@ -146,10 +144,13 @@ if __name__=="__main__":
                                         change_dfa.SetState(nextState)
                                         if change_dfa.IsAccepted():
                                             print("<",change_dfa.GetToken(),",",str_temp_input_char,">,")
+                                            state.append(dfa.GetToken())
                                             break 
                                 change_dfa.Reset()
                             else :
                                 print("<",dfa.GetToken(),",",str_temp_input_char,">,")
+                                state.append(dfa.GetToken())
+
                             
                             temp_input_char = [] #초기화
                             temp_getTableName = "" #초기화
@@ -179,6 +180,8 @@ if __name__=="__main__":
                             temp_input_char.append(origin_input_char)
                             str_temp_input_char=''.join(temp_input_char)
                             print("<",dfa.GetToken(),",",str_temp_input_char,">,")
+                            state.append(dfa.GetToken())
+
                             
                             temp_input_char = [] #초기화
                             temp_getTableName = "" #초기화
@@ -190,7 +193,7 @@ if __name__=="__main__":
                     continue
 
             else :
-                
+
                 if dfa.PeekNextState(input_char)=="Unknown" :
                     dfa.Reset()
 
@@ -199,12 +202,43 @@ if __name__=="__main__":
                     dfa.SetState(nextState)
 
                     if dfa.IsAccepted():
-                        try:
+                        try:                                                 
                             next_index=index+1
                             next_input_char = inputString[next_index]
+
                             if next_input_char.isdigit():
                                 next_input_char="DIGIT"
                             next_input_state = dfa.PeekNextState(next_input_char)
+                            
+                            # - 토큰 처리
+                            if input_char=="-":
+                                pos = index
+                                next_index=index+1
+                                next_input_char = inputString[next_index]
+                            # - 뒤 0이 올 경우
+                                if next_input_char == '0':
+                                    break
+                            # - 뒤 숫자가 올 경우
+                                if next_input_char.isdigit():
+                                    pos = len(state)
+                                    #while state[pos] in WHITESPACE:
+                                        #pos -= 1
+                                    if pos == 0:
+                                        temp_input_char.append(input_char)
+                                        temp_getTableName = dfa.GetTableName()
+                                        break
+                                    elif (state[pos-1] == "ID" or state[pos-1] == "INTEGER") :
+                                        pass
+                                    else:
+                                        temp_input_char.append(input_char)
+                                        temp_getTableName = "SIGN_INTEGER"
+                                        if next_input_char.isdigit():
+                                            next_input_char="DIGIT"
+                                            break
+                                        else :
+                                            break
+                                                                            
+                            # - 뒤 숫자가 오지 않을 경우 -> OP로 처리   
                             if next_input_state != 'Unknown' and next_input_state != 'Rejected':
                                 temp_input_char.append(input_char)
                                 temp_getTableName = dfa.GetTableName()
@@ -214,7 +248,10 @@ if __name__=="__main__":
                                     dfa.Reset()
                                     break
                                 else :
+                                    # keyword vtype 모두 ID로 저장됨
+                                    state.append(dfa.GetToken())                                    
                                     print("<",dfa.GetToken(),",",input_char,">,")
+
                                     dfa.Reset()
                                     break
                         except IndexError:
@@ -223,6 +260,8 @@ if __name__=="__main__":
                                     break
                             else:
                                 print("<",dfa.GetToken(),",",input_char,">,")
+                                state.append(dfa.GetToken())
+
                     
                     else:
                         #single_character이랑 literal_string 부분이 여기로 들어옴
@@ -247,3 +286,5 @@ if __name__=="__main__":
                                 pass
                                 # print(input_char,11)
                                 # print("<",dfa.GetToken(),",",input_char,">,,,")
+    for i in range(0,len(state)):
+        print(state[i])
