@@ -20,6 +20,26 @@ COMPARISON = {
     }
 }
 
+# SIGN_INTEGER = {
+#     "Name" : "SIGN_INTEGER",
+#     "AcceptedStates": {
+#         "T2": "INTEGER",
+#         "T3": "INTEGER",
+#         "T4": "INTEGER",
+#         "T5": "INTEGER",
+#         "T6": "INTEGER",
+#     },
+#     "Table": {
+#         "T0": {"-": "T1", "EXCEPT_ZERO": "T2", "DIGIT": "",   "0": "T3"},
+#         "T1": {"-": "",   "EXCEPT_ZERO": "T4", "DIGIT": "",   "0": ""  },
+#         "T2": {"-": "",   "EXCEPT_ZERO": "",   "DIGIT": "T5", "0": ""  },
+#         "T3": {"-": "",   "EXCEPT_ZERO": "",   "DIGIT": "",   "0": ""  },
+#         "T4": {"-": "",   "EXCEPT_ZERO": "",   "DIGIT": "T6", "0": ""  },
+#         "T5": {"-": "",   "EXCEPT_ZERO": "",   "DIGIT": "T5", "0": ""  },
+#         "T6": {"-": "",   "EXCEPT_ZERO": "",   "DIGIT": "T6", "0": ""  },
+#     }
+# }
+
 SIGN_INTEGER = {
     "Name" : "SIGN_INTEGER",
     "AcceptedStates": {
@@ -27,18 +47,28 @@ SIGN_INTEGER = {
         "T3": "INTEGER",
         "T4": "INTEGER",
         "T5": "INTEGER",
-        "T6": "INTEGER",
     },
     "Table": {
-        "T0": {"-": "T1", "EXCEPT_ZERO": "T2", "DIGIT": "",   "0": "T3"},
-        "T1": {"-": "",   "EXCEPT_ZERO": "T4", "DIGIT": "",   "0": ""  },
-        "T2": {"-": "",   "EXCEPT_ZERO": "",   "DIGIT": "T5", "0": ""  },
-        "T3": {"-": "",   "EXCEPT_ZERO": "",   "DIGIT": "",   "0": ""  },
-        "T4": {"-": "",   "EXCEPT_ZERO": "",   "DIGIT": "T6", "0": ""  },
-        "T5": {"-": "",   "EXCEPT_ZERO": "",   "DIGIT": "T5", "0": ""  },
-        "T6": {"-": "",   "EXCEPT_ZERO": "",   "DIGIT": "T6", "0": ""  },
+        "T0": {"-": "T1", "EXCEPT_ZERO": "T2", "DIGIT": ""},
+        "T1": {"-": "",   "EXCEPT_ZERO": "T3", "DIGIT": ""},
+        "T2": {"-": "",   "EXCEPT_ZERO": "",   "DIGIT": "T4"},
+        "T3": {"-": "",   "EXCEPT_ZERO": "",   "DIGIT": "T5"},
+        "T4": {"-": "",   "EXCEPT_ZERO": "",   "DIGIT": "T4"},
+        "T5": {"-": "",   "EXCEPT_ZERO": "",   "DIGIT": "T5"},
     }
 }
+
+ZERO = {
+    "Name" : "ZERO",
+    "AcceptedStates": {
+        "T1": "INTEGER",
+    },
+    "Table": {
+        "T0": {"0": "T1"},
+        "T1": {"0": ""},
+    }
+}
+
 
 BRACE = {
     "Name" : "BRACE",

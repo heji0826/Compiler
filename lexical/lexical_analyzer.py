@@ -1,4 +1,4 @@
-from dfa_tables import ARITHMETIC_OPERATOR,SIGN_INTEGER,IDENTIFIER,BRACE,LITERAL_STRING,SINGLE_CHARACTER,PAREN,BRACKET,WHITESPACE,SEPARATE,SEMI,ASSIGN,BOOL_STRING,VARIABLE_TYPE,KEYWORD
+from dfa_tables import ARITHMETIC_OPERATOR,SIGN_INTEGER,IDENTIFIER,BRACE,ZERO,LITERAL_STRING,SINGLE_CHARACTER,PAREN,BRACKET,WHITESPACE,SEPARATE,SEMI,ASSIGN,BOOL_STRING,VARIABLE_TYPE,KEYWORD
 
 def handling_integer():
     # temp에 넣어진 값과, 현재 진행중인 그 토큰 이름을 파라미터로 받아서
@@ -82,7 +82,7 @@ if __name__=="__main__":
     inputString = f.read()
     f.close()
     # 우선순위 순으로 포함시켜야함 ! 
-    transition_table_1=[ARITHMETIC_OPERATOR,SIGN_INTEGER,IDENTIFIER,BRACE,PAREN,BRACKET,WHITESPACE,SEPARATE,SEMI,ASSIGN]
+    transition_table_1=[ARITHMETIC_OPERATOR,SIGN_INTEGER,IDENTIFIER,BRACE,PAREN,BRACKET,ZERO,WHITESPACE,SEPARATE,SEMI,ASSIGN]
     # ,LITERAL_STRING,SINGLE_CHARACTER
     # COMPARISON
     transition_table_2=[BOOL_STRING,VARIABLE_TYPE,KEYWORD]
@@ -97,6 +97,7 @@ if __name__=="__main__":
             dfa.LoadTransitionTable(transition_table_1[i])
 
             if temp_getTableName != "":
+                
                 if dfa.GetTableName()==temp_getTableName:
                    
                     nextState = dfa.PeekNextState(input_char)
@@ -177,8 +178,3 @@ if __name__=="__main__":
                                     break
                             else:
                                 print("<",dfa.GetToken(),",",input_char,">,")
-
-
-
-                     
-   

@@ -1,1 +1,1 @@
-class  return true false if_ if else int char boolean string string_ { } ,, [ ] / * + - string 
+class  return true false if_ if =  inta int_a int else _func_ int char boolean string string_ { } ,, [ ] / * + - string a=a+-
