@@ -81,7 +81,7 @@ if __name__=="__main__":
     inputString = inputString+" "
     f.close()
     # 우선순위 순으로 포함시켜야함 ! 
-    transition_table_1=[ARITHMETIC_OPERATOR,SIGN_INTEGER,IDENTIFIER,BRACE,PAREN,BRACKET,ZERO,COMPARISON_1,WHITESPACE,SEPARATE,SEMI,ASSIGN]
+    transition_table_1=[ARITHMETIC_OPERATOR,SIGN_INTEGER,SINGLE_CHARACTER,LITERAL_STRING,IDENTIFIER,BRACE,PAREN,BRACKET,ZERO,COMPARISON_1,WHITESPACE,SEPARATE,SEMI,ASSIGN]
     # ,LITERAL_STRING,SINGLE_CHARACTER
     # COMPARISON - COMPARISON1이랑 COMPARISON2로 나누자 ..! 
     # COMPARISON_3,COMPARISON_2,COMPARISON_4,COMPARISON_5,
@@ -98,11 +98,11 @@ if __name__=="__main__":
             dfa.LoadTransitionTable(transition_table_1[i])
 
             if temp_getTableName != "":
+                
                 if input_char.isdigit():
                     input_char="DIGIT"
 
                 if dfa.GetTableName()==temp_getTableName:
-                   
                     nextState = dfa.PeekNextState(input_char)
                     dfa.SetState(nextState)
 
@@ -156,8 +156,35 @@ if __name__=="__main__":
                             dfa.Reset()
                             break
                     else :
-                        #if%같은 accept가 안되는경우쓰 
-                        pass
+                        #single character이나 literal 아직 끝마무리 안되었을때
+                        next_index=index+1
+                        next_input_char = inputString[next_index]
+
+                        if next_input_char.isdigit():
+                            next_input_char="DIGIT"
+
+                        next_input_state = dfa.PeekNextState(next_input_char)
+
+                        # 원래 input 값 origin_input_char 변수에 두기
+                        if input_char=='DIGIT':
+                                origin_input_char=inputString[index]
+                        else :
+                            origin_input_char=input_char
+
+                        if next_input_state != 'Unknown' and next_input_state != 'Rejected':
+                            temp_input_char.append(origin_input_char)
+                            temp_getTableName = dfa.GetTableName()
+                            break
+                        else:
+                            temp_input_char.append(origin_input_char)
+                            str_temp_input_char=''.join(temp_input_char)
+                            print("<",dfa.GetToken(),",",str_temp_input_char,">,")
+                            
+                            temp_input_char = [] #초기화
+                            temp_getTableName = "" #초기화
+                            dfa.Reset()
+                            break
+
                 else:
                     #if123같은 것들이 들어오는 경우에 해당하는 조건,,인가,,?
                     continue
@@ -179,7 +206,6 @@ if __name__=="__main__":
                                 next_input_char="DIGIT"
                             next_input_state = dfa.PeekNextState(next_input_char)
                             if next_input_state != 'Unknown' and next_input_state != 'Rejected':
-                                
                                 temp_input_char.append(input_char)
                                 temp_getTableName = dfa.GetTableName()
                                 break
@@ -197,3 +223,27 @@ if __name__=="__main__":
                                     break
                             else:
                                 print("<",dfa.GetToken(),",",input_char,">,")
+                    
+                    else:
+                        #single_character이랑 literal_string 부분이 여기로 들어옴
+                        try:
+                            next_index=index+1
+                            next_input_char = inputString[next_index]
+                            if next_input_char.isdigit():
+                                next_input_char="DIGIT"
+
+                            next_input_state = dfa.PeekNextState(next_input_char)
+
+                            if next_input_state != 'Unknown' and next_input_state != 'Rejected':
+                                temp_input_char.append(input_char)
+                                temp_getTableName = dfa.GetTableName()
+                                break
+
+                        except IndexError:
+                            if dfa.GetToken()=="WHITESPACE":
+                                    dfa.Reset()
+                                    break
+                            else:
+                                pass
+                                # print(input_char,11)
+                                # print("<",dfa.GetToken(),",",input_char,">,,,")

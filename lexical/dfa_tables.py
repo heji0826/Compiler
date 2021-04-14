@@ -236,7 +236,7 @@ LITERAL_STRING = {
         "T5": "LITERAL",
     },
     "Table": {
-        "T0": {'"': "T1", "DIGIT": "", "LETTER": "", " ":"" },
+        "T0": { "DIGIT": "", "LETTER": "", " ":"" ,'"': "T1"},
         "T1": {'"': "T5", "DIGIT": "T3", "LETTER": "T2", " ":"T4" },
         "T2": {'"': "T5", "DIGIT": "T3", "LETTER": "T2", " ":"T4" },
         "T3": {'"': "T5", "DIGIT": "T3", "LETTER": "T2", " ":"T4" },
