@@ -22,7 +22,7 @@ class FiniteAutomaton:
     def GetTableName(self):
         return self.tableName
  
-    def PeekNextState(self, _input): 
+    def PeekNextState(self, _input, _origin_digit=None): 
         # table에 input 들어가기전에 input 형태 변경해주기     
         if _input.isalpha() and self.GetTableName()=='IDENTIFIER' :
             _input='LETTER'
@@ -32,6 +32,10 @@ class FiniteAutomaton:
 
         elif _input.isalpha() and self.GetTableName()=='LITERAL_STRING' :
             _input='LETTER' 
+        
+        elif _input.isdigit():
+            if _input != '0':
+                _input='EXCEPT_ZERO'
 
 
         # 현재 T4인데 첫 transition에 애초에 T4가 없는경우엔 바로 빠져나가야해
@@ -80,24 +84,28 @@ class FiniteAutomaton:
 if __name__=="__main__":
     f = open("./lexical/input.txt", 'r')
     inputString = f.read()
+    inputString = inputString+" "
     f.close()
     # 우선순위 순으로 포함시켜야함 ! 
     transition_table_1=[ARITHMETIC_OPERATOR,SIGN_INTEGER,IDENTIFIER,BRACE,PAREN,BRACKET,ZERO,WHITESPACE,SEPARATE,SEMI,ASSIGN]
     # ,LITERAL_STRING,SINGLE_CHARACTER
-    # COMPARISON
+    # COMPARISON - COMPARISON1이랑 COMPARISON2로 나누자 ..! 
     transition_table_2=[BOOL_STRING,VARIABLE_TYPE,KEYWORD]
 
     dfa = FiniteAutomaton()
 
     temp_input_char = []
     temp_getTableName = ""
+    
 
     for index, input_char in enumerate(inputString) :
         for i in range(0,len(transition_table_1)):
             dfa.LoadTransitionTable(transition_table_1[i])
 
             if temp_getTableName != "":
-                
+                if input_char.isdigit():
+                    input_char="DIGIT"
+
                 if dfa.GetTableName()==temp_getTableName:
                    
                     nextState = dfa.PeekNextState(input_char)
@@ -105,14 +113,25 @@ if __name__=="__main__":
 
                     if dfa.IsAccepted():
                         next_index=index+1
-                        next_input_state = dfa.PeekNextState(inputString[next_index])
+                        next_input_char = inputString[next_index]
+                        
+                        if next_input_char.isdigit():
+                            next_input_char="DIGIT"
+
+                        next_input_state = dfa.PeekNextState(next_input_char)
+
+                        # 원래 input 값 origin_input_char 변수에 두기
+                        if input_char=='DIGIT':
+                                origin_input_char=inputString[index]
+                        else :
+                            origin_input_char=input_char
 
                         if next_input_state != 'Unknown' and next_input_state != 'Rejected':
-                            temp_input_char.append(input_char)
+                            temp_input_char.append(origin_input_char)
                             temp_getTableName = dfa.GetTableName()
                             break
                         else:
-                            temp_input_char.append(input_char)
+                            temp_input_char.append(origin_input_char)
                             str_temp_input_char=''.join(temp_input_char)
 
                             if dfa.GetTableName() == 'IDENTIFIER':
@@ -133,16 +152,20 @@ if __name__=="__main__":
                                         if change_dfa.IsAccepted():
                                             print("<",change_dfa.GetToken(),",",str_temp_input_char,">,")
                                             break 
+                                change_dfa.Reset()
                             else :
                                 print("<",dfa.GetToken(),",",str_temp_input_char,">,")
                             
                             temp_input_char = [] #초기화
                             temp_getTableName = "" #초기화
-                            change_dfa.Reset()
+                            # if change_dfa.exists():
                             dfa.Reset()
                             break
+                    else :
+                        #if%같은 accept가 안되는경우쓰 
+                        pass
                 else:
-                    #if123같은 것들이 들어오는 경우에 해당하는 조건
+                    #if123같은 것들이 들어오는 경우에 해당하는 조건,,인가,,?
                     continue
 
             else :
@@ -151,15 +174,16 @@ if __name__=="__main__":
                     dfa.Reset()
 
                 else :
-                    
                     nextState = dfa.PeekNextState(input_char)
                     dfa.SetState(nextState)
 
                     if dfa.IsAccepted():
-                        next_index=index+1
-                        
                         try:
-                            next_input_state = dfa.PeekNextState(inputString[next_index])
+                            next_index=index+1
+                            next_input_char = inputString[next_index]
+                            if next_input_char.isdigit():
+                                next_input_char="DIGIT"
+                            next_input_state = dfa.PeekNextState(next_input_char)
                             if next_input_state != 'Unknown' and next_input_state != 'Rejected':
                                 temp_input_char.append(input_char)
                                 temp_getTableName = dfa.GetTableName()
