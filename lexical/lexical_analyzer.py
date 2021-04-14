@@ -81,7 +81,7 @@ if __name__=="__main__":
     inputString = inputString+" "
     f.close()
     # 우선순위 순으로 포함시켜야함 ! 
-    transition_table_1=[ARITHMETIC_OPERATOR,SIGN_INTEGER,SINGLE_CHARACTER,LITERAL_STRING,IDENTIFIER,BRACE,PAREN,BRACKET,ZERO,COMPARISON_1,WHITESPACE,SEPARATE,SEMI,ASSIGN]
+    transition_table_1=[ARITHMETIC_OPERATOR,SIGN_INTEGER,SINGLE_CHARACTER,LITERAL_STRING,IDENTIFIER,BRACE,PAREN,BRACKET,ZERO,COMPARISON_3,COMPARISON_2,COMPARISON_4,COMPARISON_5,COMPARISON_1,WHITESPACE,SEPARATE,SEMI,ASSIGN]
     # ,LITERAL_STRING,SINGLE_CHARACTER
     # COMPARISON - COMPARISON1이랑 COMPARISON2로 나누자 ..! 
     # COMPARISON_3,COMPARISON_2,COMPARISON_4,COMPARISON_5,
@@ -230,21 +230,26 @@ if __name__=="__main__":
                                     else:
                                         temp_input_char.append(input_char)
                                         temp_getTableName = "SIGN_INTEGER"
-                                        break
-                                                                            
-                            # - 뒤 숫자가 오지 않을 경우 -> OP로 처리   
+                                        break                                                                           
+                            if input_char=="=":
+                                if next_input_char == "=":
+                                        temp_input_char.append(input_char)
+                                        temp_getTableName = dfa.GetTableName()
+                                        break 
+                                else:
+                                    pass  
                             if next_input_state != 'Unknown' and next_input_state != 'Rejected':
                                 temp_input_char.append(input_char)
                                 temp_getTableName = dfa.GetTableName()
-                                break
+                                break                        
                             else:
                                 if dfa.GetToken()=="WHITESPACE":
                                     dfa.Reset()
-                                    break
+                                    break                              
                                 else :
                                     # keyword vtype 모두 ID로 저장됨
                                     state.append(dfa.GetToken())                                    
-                                    print("<",dfa.GetToken(),",",input_char,">,")
+                                    print("5<",dfa.GetToken(),",",input_char,">,")
 
                                     dfa.Reset()
                                     break
@@ -253,9 +258,8 @@ if __name__=="__main__":
                                     dfa.Reset()
                                     break
                             else:
-                                print("<",dfa.GetToken(),",",input_char,">,")
+                                print("6<",dfa.GetToken(),",",input_char,">,")
                                 state.append(dfa.GetToken())
-
                     
                     else:
                         #single_character이랑 literal_string 부분이 여기로 들어옴
