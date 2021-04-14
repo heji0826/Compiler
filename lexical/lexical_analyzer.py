@@ -1,10 +1,4 @@
-from dfa_tables import ARITHMETIC_OPERATOR,SIGN_INTEGER,IDENTIFIER,BRACE,ZERO,LITERAL_STRING,SINGLE_CHARACTER,PAREN,BRACKET,WHITESPACE,SEPARATE,SEMI,ASSIGN,BOOL_STRING,VARIABLE_TYPE,KEYWORD
-
-def handling_integer():
-    # temp에 넣어진 값과, 현재 진행중인 그 토큰 이름을 파라미터로 받아서
-    # 이게 zero인지,, 사실 제로면 바로 끝내야함
-    # 아니면 except_zero인지,,, digit인지 확인해서 .. 바로 peekNextState에 넣어버리자!
-    pass
+from dfa_tables import ARITHMETIC_OPERATOR,COMPARISON_1,COMPARISON_2,COMPARISON_3,COMPARISON_4,COMPARISON_5,SIGN_INTEGER,IDENTIFIER,BRACE,ZERO,LITERAL_STRING,SINGLE_CHARACTER,PAREN,BRACKET,WHITESPACE,SEPARATE,SEMI,ASSIGN,BOOL_STRING,VARIABLE_TYPE,KEYWORD
 
 
 class FiniteAutomaton:
@@ -87,9 +81,10 @@ if __name__=="__main__":
     inputString = inputString+" "
     f.close()
     # 우선순위 순으로 포함시켜야함 ! 
-    transition_table_1=[ARITHMETIC_OPERATOR,SIGN_INTEGER,IDENTIFIER,BRACE,PAREN,BRACKET,ZERO,WHITESPACE,SEPARATE,SEMI,ASSIGN]
+    transition_table_1=[ARITHMETIC_OPERATOR,SIGN_INTEGER,IDENTIFIER,BRACE,PAREN,BRACKET,ZERO,COMPARISON_1,WHITESPACE,SEPARATE,SEMI,ASSIGN]
     # ,LITERAL_STRING,SINGLE_CHARACTER
     # COMPARISON - COMPARISON1이랑 COMPARISON2로 나누자 ..! 
+    # COMPARISON_3,COMPARISON_2,COMPARISON_4,COMPARISON_5,
     transition_table_2=[BOOL_STRING,VARIABLE_TYPE,KEYWORD]
 
     dfa = FiniteAutomaton()
@@ -158,7 +153,6 @@ if __name__=="__main__":
                             
                             temp_input_char = [] #초기화
                             temp_getTableName = "" #초기화
-                            # if change_dfa.exists():
                             dfa.Reset()
                             break
                     else :
@@ -185,6 +179,7 @@ if __name__=="__main__":
                                 next_input_char="DIGIT"
                             next_input_state = dfa.PeekNextState(next_input_char)
                             if next_input_state != 'Unknown' and next_input_state != 'Rejected':
+                                
                                 temp_input_char.append(input_char)
                                 temp_getTableName = dfa.GetTableName()
                                 break

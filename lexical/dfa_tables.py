@@ -1,24 +1,66 @@
 # Transition Table of each token's DFA
-COMPARISON = {
-    "Name" : "COMPARISON",
+
+COMPARISON_1 = {
+    "Name" : "COMPARISON_1",
     "AcceptedStates": {
         "T1": "COMPARISON",
         "T2": "COMPARISON",
-        "T3": "COMPARISON",
-        "T4": "COMPARISON",
-        "T5": "COMPARISON",
-        "T6": "COMPARISON",
     },
     "Table": {
-        "T0": {">": "T1", "<": "T2", "==": "T3", "!=": "T4", ">=":"T5", "<=":"T6" },
-        "T1": {">": "",   "<": "",   "==": "",   "!=": "",   ">=":"",   "<=":""  },
-        "T2": {">": "",   "<": "",   "==": "",   "!=": "",   ">=":"",   "<=":""  },
-        "T3": {">": "",   "<": "",   "==": "",   "!=": "",   ">=":"",   "<=":""  },
-        "T4": {">": "",   "<": "",   "==": "",   "!=": "",   ">=":"",   "<=":""  },
-        "T5": {">": "",   "<": "",   "==": "",   "!=": "",   ">=":"",   "<=":""  },
-        "T6": {">": "",   "<": "",   "==": "",   "!=": "",   ">=":"",   "<=":""  },
+        "T0": {"<": "T1", ">": "T2"},
+        "T1": {"<": "",   ">": ""},
+        "T2": {"<": "",   ">": ""},
     }
 }
+
+COMPARISON_2 = {
+    "Name" : "COMPARISON_2",
+    "AcceptedStates": {
+        "T2": "COMPARISON",
+    },
+    "Table": {
+        "T0": {"=": "T1"},
+        "T1": {"=": "T2"},
+        "T2": {"=": ""},
+    }
+}
+
+COMPARISON_3 = {
+    "Name" : "COMPARISON_3",
+    "AcceptedStates": {
+        "T2": "COMPARISON",
+    },
+    "Table": {
+        "T0": {"!": "T1", "=": ""},
+        "T1": {"!": "",   "=": "T2"},
+        "T2": {"!": "",   "=": ""},
+    }
+}
+
+COMPARISON_4 = {
+    "Name" : "COMPARISON_4",
+    "AcceptedStates": {
+        "T2": "COMPARISON",
+    },
+    "Table": {
+        "T0": {">": "T1", "=": ""},
+        "T1": {">": "",   "=": "T2"},
+        "T2": {">": "",   "=": ""},
+    }
+}
+
+COMPARISON_5 = {
+    "Name" : "COMPARISON_5",
+    "AcceptedStates": {
+        "T2": "COMPARISON",
+    },
+    "Table": {
+        "T0": {"<": "T1", "=": ""},
+        "T1": {"<": "",   "=": "T2"},
+        "T2": {"<": "",   "=": ""},
+    }
+}
+
 
 SIGN_INTEGER = {
     "Name" : "SIGN_INTEGER",
@@ -103,7 +145,6 @@ WHITESPACE= {
         "T3": {"\t": "",   "\n": "",   " ":"" },
     }
 }
-
 
 ARITHMETIC_OPERATOR = {
     "Name" : "ARITHMETIC_OPERATOR",
