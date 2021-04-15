@@ -144,7 +144,7 @@ if __name__=="__main__":
                                         change_dfa.SetState(nextState)
                                         if change_dfa.IsAccepted():
                                             print("<",change_dfa.GetToken(),",",str_temp_input_char,">,")
-                                            state.append(dfa.GetToken())
+                                            state.append(change_dfa.GetToken())
                                             break 
                                 change_dfa.Reset()
                             else :
@@ -223,7 +223,7 @@ if __name__=="__main__":
                                     pos = len(state)
                                     if pos == 0:
                                         temp_input_char.append(input_char)
-                                        temp_getTableName = dfa.GetTableName()
+                                        temp_getTableName = "SIGN_INTEGER"
                                         break
                                     elif (state[pos-1] == "ID" or state[pos-1] == "INTEGER") :
                                         pass
@@ -234,7 +234,7 @@ if __name__=="__main__":
                             if input_char=="=":
                                 if next_input_char == "=":
                                         temp_input_char.append(input_char)
-                                        temp_getTableName = dfa.GetTableName()
+                                        temp_getTableName = "COMPARISON_2"
                                         break 
                                 else:
                                     pass  
