@@ -207,7 +207,8 @@ if __name__=="__main__":
                             next_input_char = inputString[next_index]
 
                             if next_input_char.isdigit():
-                                next_input_char="DIGIT"
+                                # if next_input_char != '0':
+                                    next_input_char="DIGIT"
                             next_input_state = dfa.PeekNextState(next_input_char)
                             
                             # - 토큰 처리
@@ -217,6 +218,7 @@ if __name__=="__main__":
                                 next_input_char = inputString[next_index]
                             # - 뒤 0이 올 경우
                                 if next_input_char == '0':
+                                    print("<",dfa.GetToken(),",",input_char,">,,,")
                                     break
                             # - 뒤 숫자가 올 경우
                                 if next_input_char.isdigit():
@@ -284,5 +286,5 @@ if __name__=="__main__":
                                 pass
                                 # print(input_char,11)
                                 # print("<",dfa.GetToken(),",",input_char,">,,,")
-    for i in range(0,len(state)):
-        print(state[i])
+    # for i in range(0,len(state)):
+    #     print(state[i])
