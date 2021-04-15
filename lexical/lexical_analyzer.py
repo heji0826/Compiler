@@ -92,6 +92,8 @@ if __name__=="__main__":
     temp_input_char = []
     temp_getTableName = ""
     state = []
+    g='<'
+    h='>'
 
     for index, input_char in enumerate(inputString) :
         for i in range(0,len(transition_table_1)):
@@ -196,21 +198,22 @@ if __name__=="__main__":
 
                 if dfa.PeekNextState(input_char)=="Unknown" :
                     if i == len(transition_table_1)-1:
-                        print("<",dfa.GetToken(),",",input_char,">")
+                        if input_char=='<':
+                            print("<","COMPARISON",",",input_char,">")
+                        else :
+                            print("<",dfa.GetToken(),",",input_char,">")
                     dfa.Reset()
 
                 else :
                     nextState = dfa.PeekNextState(input_char)
                     dfa.SetState(nextState)
-
                     if dfa.IsAccepted():
                         try:                                                 
                             next_index=index+1
                             next_input_char = inputString[next_index]
 
                             if next_input_char.isdigit():
-                                # if next_input_char != '0':
-                                    next_input_char="DIGIT"
+                                next_input_char="DIGIT"
                             next_input_state = dfa.PeekNextState(next_input_char)
                             
                             # - 토큰 처리
@@ -251,10 +254,8 @@ if __name__=="__main__":
                                     dfa.Reset()
                                     break                              
                                 else :
-                                    # keyword vtype 모두 ID로 저장됨
                                     state.append(dfa.GetToken())                                    
                                     print("5<",dfa.GetToken(),",",input_char,">,")
-
                                     dfa.Reset()
                                     break
                         except IndexError:
@@ -286,7 +287,3 @@ if __name__=="__main__":
                                     break
                             else:
                                 pass
-                                # print(input_char,11)
-                                # print("<",dfa.GetToken(),",",input_char,">,,,")
-    # for i in range(0,len(state)):
-    #     print(state[i])
