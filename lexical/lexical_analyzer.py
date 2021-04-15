@@ -218,7 +218,7 @@ if __name__=="__main__":
                                 next_input_char = inputString[next_index]
                             # - 뒤 0이 올 경우
                                 if next_input_char == '0':
-                                    print("<",dfa.GetToken(),",",input_char,">,,,")
+                                    print("<",dfa.GetToken(),",",input_char,">")
                                     break
                             # - 뒤 숫자가 올 경우
                                 if next_input_char.isdigit():

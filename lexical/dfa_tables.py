@@ -217,7 +217,7 @@ VARIABLE_TYPE = {
 SINGLE_CHARACTER = {
     "Name" : "SINGLE_CHARACTER",
     "AcceptedStates": {
-        "T6": "SINGLE",
+        "T6": "CHAR",
     },
     "Table": {
         "T0": {"'": "T1", "DIGIT": "", "LETTER": "", "SYMBOL":"", " ":"" },
