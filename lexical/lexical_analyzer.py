@@ -1,4 +1,4 @@
-from dfa_tables import ARITHMETIC_OPERATOR,COMPARISON_1,COMPARISON_2,COMPARISON_3,COMPARISON_4,COMPARISON_5,SIGN_INTEGER,IDENTIFIER,BRACE,ZERO,LITERAL_STRING,SINGLE_CHARACTER,PAREN,BRACKET,WHITESPACE,SEPARATE,SEMI,ASSIGN,BOOL_STRING,VARIABLE_TYPE,KEYWORD
+from dfa_tables import ARITHMETIC_OPERATOR,COMPARISON_1,COMPARISON_2,COMPARISON_3,COMPARISON_4,COMPARISON_5,SIGN_INTEGER,IDENTIFIER,BRACE,ZERO,LITERAL_STRING,SINGLE_CHARACTER,PAREN,BRACKET,WHITESPACE,SEPARATE,SEMI,ASSIGN,BOOL_STRING,VARIABLE_TYPE,KEYWORD,DDAOM_ERROR
 
 
 class FiniteAutomaton:
@@ -22,7 +22,7 @@ class FiniteAutomaton:
             _input='LETTER'
 
         elif _input.isalpha() and self.GetTableName()=='SINGLE_CHARACTER' :
-           _input='LETTER'
+           _input='LETTER'     
 
         elif _input.isalpha() and self.GetTableName()=='LITERAL_STRING' :
             _input='LETTER' 
@@ -81,7 +81,7 @@ if __name__=="__main__":
     inputString = inputString+" "
     f.close()
     # 우선순위 순으로 포함시켜야함 ! 
-    transition_table_1=[ARITHMETIC_OPERATOR,SIGN_INTEGER,SINGLE_CHARACTER,LITERAL_STRING,IDENTIFIER,BRACE,PAREN,BRACKET,ZERO,COMPARISON_3,COMPARISON_2,COMPARISON_4,COMPARISON_5,COMPARISON_1,WHITESPACE,SEPARATE,SEMI,ASSIGN]
+    transition_table_1=[ARITHMETIC_OPERATOR,SIGN_INTEGER,DDAOM_ERROR,SINGLE_CHARACTER,LITERAL_STRING,IDENTIFIER,BRACE,PAREN,BRACKET,ZERO,COMPARISON_3,COMPARISON_2,COMPARISON_4,COMPARISON_5,COMPARISON_1,WHITESPACE,SEPARATE,SEMI,ASSIGN]
     # ,LITERAL_STRING,SINGLE_CHARACTER
     # COMPARISON - COMPARISON1이랑 COMPARISON2로 나누자 ..! 
     # COMPARISON_3,COMPARISON_2,COMPARISON_4,COMPARISON_5,
@@ -135,7 +135,7 @@ if __name__=="__main__":
                                     if change_dfa.PeekNextState(str_temp_input_char)=="Unknown" :
                                         is_identifier=is_identifier+1
                                         if is_identifier==3:
-                                            print("<",dfa.GetToken(),",",str_temp_input_char,">,")
+                                            print("1<",dfa.GetToken(),",",str_temp_input_char,">,")
                                             state.append(dfa.GetToken())
                                         else:
                                             continue
@@ -143,12 +143,12 @@ if __name__=="__main__":
                                         nextState = change_dfa.PeekNextState(str_temp_input_char)
                                         change_dfa.SetState(nextState)
                                         if change_dfa.IsAccepted():
-                                            print("<",change_dfa.GetToken(),",",str_temp_input_char,">,")
+                                            print("2<",change_dfa.GetToken(),",",str_temp_input_char,">,")
                                             state.append(change_dfa.GetToken())
                                             break 
                                 change_dfa.Reset()
                             else :
-                                print("<",dfa.GetToken(),",",str_temp_input_char,">,")
+                                print("3<",dfa.GetToken(),",",str_temp_input_char,">,")
                                 state.append(dfa.GetToken())
 
                             
@@ -185,7 +185,7 @@ if __name__=="__main__":
                         else:
                             temp_input_char.append(origin_input_char)
                             str_temp_input_char=''.join(temp_input_char)
-                            print("<",dfa.GetToken(),",",str_temp_input_char,">,")
+                            print("4<",dfa.GetToken(),",",str_temp_input_char,">,")
                             state.append(dfa.GetToken())
 
                             
@@ -201,11 +201,13 @@ if __name__=="__main__":
             else :
 
                 if dfa.PeekNextState(input_char)=="Unknown" :
+                    #if input_char == "'":
+                        
                     if i == len(transition_table_1)-1:
                         if input_char=='<':
-                            print("<","COMPARISON",",",input_char,">")
+                            print("5<","COMPARISON",",",input_char,">")
                         else :
-                            print("<",dfa.GetToken(),",",input_char,">")
+                            print("6<",dfa.GetToken(),",",input_char,">")
                     dfa.Reset()
 
                 else :
@@ -227,8 +229,7 @@ if __name__=="__main__":
                                 next_input_char = inputString[next_index]
                             # - 뒤 0이 올 경우
                                 if next_input_char == '0':
-                                    print("<",dfa.GetToken(),",",input_char,">")
-                                    break
+                                    pass
                             # - 뒤 숫자가 올 경우
                                 if next_input_char.isdigit():
                                     pos = len(state) 
@@ -259,7 +260,7 @@ if __name__=="__main__":
                                     break                              
                                 else :
                                     state.append(dfa.GetToken())                                    
-                                    print("5<",dfa.GetToken(),",",input_char,">,")
+                                    print("7<",dfa.GetToken(),",",input_char,">,")
                                     dfa.Reset()
                                     break
                         except IndexError:
@@ -267,7 +268,7 @@ if __name__=="__main__":
                                     dfa.Reset()
                                     break
                             else:
-                                print("6<",dfa.GetToken(),",",input_char,">,")
+                                print("8<",dfa.GetToken(),",",input_char,">,")
                                 state.append(dfa.GetToken())
                     
                     else:

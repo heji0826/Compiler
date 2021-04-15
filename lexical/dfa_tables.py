@@ -237,7 +237,7 @@ LITERAL_STRING = {
     },
     "Table": {
         "T0": { "DIGIT": "", "LETTER": "", " ":"" ,'"': "T1"},
-        "T1": {'"': "T5", "DIGIT": "T3", "LETTER": "T2", " ":"T4" },
+        "T1": {'"': "", "DIGIT": "T3", "LETTER": "T2", " ":"T4" },
         "T2": {'"': "T5", "DIGIT": "T3", "LETTER": "T2", " ":"T4" },
         "T3": {'"': "T5", "DIGIT": "T3", "LETTER": "T2", " ":"T4" },
         "T4": {'"': "T5", "DIGIT": "T3", "LETTER": "T2", " ":"T4" },
@@ -294,5 +294,18 @@ SEPARATE= {
     "Table": {
         "T0": {",": "T1"},
         "T1": {",": ""},
+    }
+}
+
+DDAOM_ERROR = {
+    "Name" : "DDAOM_ERROR",
+    "AcceptedStates": {
+        "T3": "Unknown Token",
+    },
+    "Table": {
+        "T0": {"'": "T1", "DIGIT": "", "LETTER": "", "SYMBOL":"", " ":"", '"': "T2" },
+        "T1": {"'": "T3", "DIGIT": "", "LETTER": "", "SYMBOL":"", " ":"", '"': "" },
+        "T2": {"'": "", "DIGIT": "", "LETTER": "", "SYMBOL":"", " ":"", '"': "T3" },
+        "T3": {"'": "", "DIGIT": "", "LETTER": "", "SYMBOL":"", " ":"", '"': "" },
     }
 }
