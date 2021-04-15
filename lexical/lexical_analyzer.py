@@ -195,6 +195,8 @@ if __name__=="__main__":
             else :
 
                 if dfa.PeekNextState(input_char)=="Unknown" :
+                    if i == len(transition_table_1)-1:
+                        print("<",dfa.GetToken(),",",input_char,">")
                     dfa.Reset()
 
                 else :
@@ -222,7 +224,7 @@ if __name__=="__main__":
                                     break
                             # - 뒤 숫자가 올 경우
                                 if next_input_char.isdigit():
-                                    pos = len(state)
+                                    pos = len(state) 
                                     if pos == 0:
                                         temp_input_char.append(input_char)
                                         temp_getTableName = "SIGN_INTEGER"
