@@ -92,8 +92,6 @@ if __name__=="__main__":
     temp_input_char = []
     temp_getTableName = ""
     state = []
-    g='<'
-    h='>'
 
     for index, input_char in enumerate(inputString) :
         for i in range(0,len(transition_table_1)):
@@ -159,9 +157,15 @@ if __name__=="__main__":
                             dfa.Reset()
                             break
                     else :
-                        #single character이나 literal 아직 끝마무리 안되었을때
+                        # single character이나 literal 아직 끝마무리 안되었을때
                         next_index=index+1
                         next_input_char = inputString[next_index]
+
+                        # 유효하지 않은 토큰임을 인식할때 
+                        # if temp_getTableName=='SIGNLE_CHARACTER':
+                        #     if next_input_char != "'" :
+                        #         print("<","Unknown Token",",",str_temp_input_char,">,")
+
 
                         if next_input_char.isdigit():
                             next_input_char="DIGIT"
