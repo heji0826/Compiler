@@ -300,12 +300,12 @@ SEPARATE= {
 DDAOM_ERROR = {
     "Name" : "DDAOM_ERROR",
     "AcceptedStates": {
-        "T3": "Unknown Token",
+        "T3": "Unknown Token123",
     },
     "Table": {
-        "T0": {"'": "T1", "DIGIT": "", "LETTER": "", "SYMBOL":"", " ":"", '"': "T2" },
-        "T1": {"'": "T3", "DIGIT": "", "LETTER": "", "SYMBOL":"", " ":"", '"': "" },
-        "T2": {"'": "", "DIGIT": "", "LETTER": "", "SYMBOL":"", " ":"", '"': "T3" },
-        "T3": {"'": "", "DIGIT": "", "LETTER": "", "SYMBOL":"", " ":"", '"': "" },
+        "T0": {"'": "T1", '"': "T2" },
+        "T1": {"'": "T3", '"': "" },
+        "T2": {"'": "", '"': "T3" },
+        "T3": {"'": "", '"': "" },
     }
 }

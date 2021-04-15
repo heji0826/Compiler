@@ -81,7 +81,7 @@ if __name__=="__main__":
     inputString = inputString+" "
     f.close()
     # 우선순위 순으로 포함시켜야함 ! 
-    transition_table_1=[ARITHMETIC_OPERATOR,SIGN_INTEGER,DDAOM_ERROR,SINGLE_CHARACTER,LITERAL_STRING,IDENTIFIER,BRACE,PAREN,BRACKET,ZERO,COMPARISON_3,COMPARISON_2,COMPARISON_4,COMPARISON_5,COMPARISON_1,WHITESPACE,SEPARATE,SEMI,ASSIGN]
+    transition_table_1=[ARITHMETIC_OPERATOR,SIGN_INTEGER,SINGLE_CHARACTER,LITERAL_STRING,DDAOM_ERROR,IDENTIFIER,BRACE,PAREN,BRACKET,ZERO,COMPARISON_3,COMPARISON_2,COMPARISON_4,COMPARISON_5,COMPARISON_1,WHITESPACE,SEPARATE,SEMI,ASSIGN]
     # ,LITERAL_STRING,SINGLE_CHARACTER
     # COMPARISON - COMPARISON1이랑 COMPARISON2로 나누자 ..! 
     # COMPARISON_3,COMPARISON_2,COMPARISON_4,COMPARISON_5,
@@ -201,8 +201,13 @@ if __name__=="__main__":
             else :
 
                 if dfa.PeekNextState(input_char)=="Unknown" :
-                    #if input_char == "'":
-                        
+                    if input_char == '"':
+                            next_index=index+1
+                            next_input_char = inputString[next_index]
+                            if(next_input_char=='"'):
+                                temp_input_char.append(input_char)
+                                temp_getTableName = "DDAOM_ERROR"
+                                break                                            
                     if i == len(transition_table_1)-1:
                         if input_char=='<':
                             print("5<","COMPARISON",",",input_char,">")
