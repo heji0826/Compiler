@@ -34,10 +34,10 @@ class FiniteAutomaton:
 
         # 현재 T4인데 첫 transition에 애초에 T4가 없는경우엔 바로 빠져나가야해
         if not self.currentState in self.table:
-            return "Unknown"
+            return "Error"
         else :
             if not _input in self.table[self.currentState]:
-                return "Unknown"
+                return "Error"
         
         nextState = self.table[self.currentState][_input]
 
@@ -57,7 +57,7 @@ class FiniteAutomaton:
         if self.currentState in self.acceptedStates:
             return self.acceptedStates[self.currentState]
         else:
-            return "Unknown Token"
+            return "Error"
  
     def IsAccepted(self):
         if self.currentState in self.acceptedStates:
@@ -118,7 +118,7 @@ if __name__=="__main__":
                         else :
                             origin_input_char=input_char
 
-                        if next_input_state != 'Unknown' and next_input_state != 'Rejected':
+                        if next_input_state != 'Error' and next_input_state != 'Rejected':
                             temp_input_char.append(origin_input_char)
                             temp_getTableName = dfa.GetTableName()
                             break
@@ -132,10 +132,10 @@ if __name__=="__main__":
                                 for i in range(0,len(transition_table_2)):
                                     change_dfa.LoadTransitionTable(transition_table_2[i])
                                     
-                                    if change_dfa.PeekNextState(str_temp_input_char)=="Unknown" :
+                                    if change_dfa.PeekNextState(str_temp_input_char)=="Error" :
                                         is_identifier=is_identifier+1
                                         if is_identifier==3:
-                                            print("1<",dfa.GetToken(),",",str_temp_input_char,">,")
+                                            print("<",dfa.GetToken(),",",str_temp_input_char,">,")
                                             state.append(dfa.GetToken())
                                         else:
                                             continue
@@ -143,12 +143,12 @@ if __name__=="__main__":
                                         nextState = change_dfa.PeekNextState(str_temp_input_char)
                                         change_dfa.SetState(nextState)
                                         if change_dfa.IsAccepted():
-                                            print("2<",change_dfa.GetToken(),",",str_temp_input_char,">,")
+                                            print("<",change_dfa.GetToken(),",",str_temp_input_char,">,")
                                             state.append(change_dfa.GetToken())
                                             break 
                                 change_dfa.Reset()
                             else :
-                                print("3<",dfa.GetToken(),",",str_temp_input_char,">,")
+                                print("<",dfa.GetToken(),",",str_temp_input_char,">,")
                                 state.append(dfa.GetToken())
 
                             
@@ -178,14 +178,14 @@ if __name__=="__main__":
                         else :
                             origin_input_char=input_char
 
-                        if next_input_state != 'Unknown' and next_input_state != 'Rejected':
+                        if next_input_state != 'Error' and next_input_state != 'Rejected':
                             temp_input_char.append(origin_input_char)
                             temp_getTableName = dfa.GetTableName()
                             break
                         else:
                             temp_input_char.append(origin_input_char)
                             str_temp_input_char=''.join(temp_input_char)
-                            print("4<",dfa.GetToken(),",",str_temp_input_char,">,")
+                            print("<",dfa.GetToken(),",",str_temp_input_char,">,")
                             state.append(dfa.GetToken())
 
                             
@@ -200,7 +200,7 @@ if __name__=="__main__":
 
             else :
 
-                if dfa.PeekNextState(input_char)=="Unknown" :
+                if dfa.PeekNextState(input_char)=="Error" :
                     if input_char == '"':
                             next_index=index+1
                             next_input_char = inputString[next_index]
@@ -210,9 +210,9 @@ if __name__=="__main__":
                                 break                                            
                     if i == len(transition_table_1)-1:
                         if input_char=='<':
-                            print("5<","COMPARISON",",",input_char,">")
+                            print("<","COMPARISON",",",input_char,">")
                         else :
-                            print("6<",dfa.GetToken(),",",input_char,">")
+                            print("<",dfa.GetToken(),",",input_char,">")
                     dfa.Reset()
 
                 else :
@@ -233,8 +233,9 @@ if __name__=="__main__":
                                 next_index=index+1
                                 next_input_char = inputString[next_index]
                             # - 뒤 0이 올 경우
-                                if next_input_char == '0':
-                                    pass
+                                #if next_input_char == '0':
+
+                                    #pass
                             # - 뒤 숫자가 올 경우
                                 if next_input_char.isdigit():
                                     pos = len(state) 
@@ -242,7 +243,7 @@ if __name__=="__main__":
                                         temp_input_char.append(input_char)
                                         temp_getTableName = "SIGN_INTEGER"
                                         break
-                                    elif (state[pos-1] == "ID" or state[pos-1] == "INTEGER") :
+                                    elif (state[pos-1] == "ID" or state[pos-1] == "INTEGER" or next_input_char== '0') :
                                         pass
                                     else:
                                         temp_input_char.append(input_char)
@@ -255,7 +256,7 @@ if __name__=="__main__":
                                         break 
                                 else:
                                     pass  
-                            if next_input_state != 'Unknown' and next_input_state != 'Rejected':
+                            if next_input_state != 'Error' and next_input_state != 'Rejected':
                                 temp_input_char.append(input_char)
                                 temp_getTableName = dfa.GetTableName()
                                 break                        
@@ -265,7 +266,7 @@ if __name__=="__main__":
                                     break                              
                                 else :
                                     state.append(dfa.GetToken())                                    
-                                    print("7<",dfa.GetToken(),",",input_char,">,")
+                                    print("<",dfa.GetToken(),",",input_char,">,")
                                     dfa.Reset()
                                     break
                         except IndexError:
@@ -273,7 +274,7 @@ if __name__=="__main__":
                                     dfa.Reset()
                                     break
                             else:
-                                print("8<",dfa.GetToken(),",",input_char,">,")
+                                print("<",dfa.GetToken(),",",input_char,">,")
                                 state.append(dfa.GetToken())
                     
                     else:
@@ -286,7 +287,7 @@ if __name__=="__main__":
 
                             next_input_state = dfa.PeekNextState(next_input_char)
 
-                            if next_input_state != 'Unknown' and next_input_state != 'Rejected':
+                            if next_input_state != 'Error' and next_input_state != 'Rejected':
                                 temp_input_char.append(input_char)
                                 temp_getTableName = dfa.GetTableName()
                                 break
