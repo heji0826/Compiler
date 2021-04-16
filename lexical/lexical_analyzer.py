@@ -23,7 +23,7 @@ class DFAautomata:
         self.acceptTN=dfa["AcceptTN"]
         self.tableName =dfa["Name"]
 
-     # table name을 return하는 함수
+    # 입력된 input을 기준으로 다음 상태를 확인해주는 함수 
     def CheckNextState(self, input, _origin_digit=None): 
         # table에 input 들어가기전에 input 형태 변경해주기     
         if input.isalpha() and self.GetTableName()=='ID' :
