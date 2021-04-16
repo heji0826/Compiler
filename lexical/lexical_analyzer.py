@@ -31,8 +31,6 @@ class FiniteAutomaton:
             if _input != '0':
                 _input='EXCEPT_ZERO'
 
-
-        # 현재 T4인데 첫 transition에 애초에 T4가 없는경우엔 바로 빠져나가야해
         if not self.currentState in self.table:
             return "Error"
         else :
@@ -82,9 +80,6 @@ if __name__=="__main__":
     f.close()
     # 우선순위 순으로 포함시켜야함 ! 
     transition_table_1=[ARITHMETIC_OPERATOR,SIGN_INTEGER,SINGLE_CHARACTER,LITERAL_STRING,DDAOM_ERROR,IDENTIFIER,BRACE,PAREN,BRACKET,ZERO,COMPARISON_3,COMPARISON_2,COMPARISON_4,COMPARISON_5,COMPARISON_1,WHITESPACE,SEPARATE,SEMI,ASSIGN]
-    # ,LITERAL_STRING,SINGLE_CHARACTER
-    # COMPARISON - COMPARISON1이랑 COMPARISON2로 나누자 ..! 
-    # COMPARISON_3,COMPARISON_2,COMPARISON_4,COMPARISON_5,
     transition_table_2=[BOOL_STRING,VARIABLE_TYPE,KEYWORD]
 
     dfa = FiniteAutomaton()
@@ -161,12 +156,6 @@ if __name__=="__main__":
                         next_index=index+1
                         next_input_char = inputString[next_index]
 
-                        # 유효하지 않은 토큰임을 인식할때 
-                        # if temp_getTableName=='SIGNLE_CHARACTER':
-                        #     if next_input_char != "'" :
-                        #         print("<","Unknown Token",",",str_temp_input_char,">,")
-
-
                         if next_input_char.isdigit():
                             next_input_char="DIGIT"
 
@@ -195,7 +184,6 @@ if __name__=="__main__":
                             break
 
                 else:
-                    #if123같은 것들이 들어오는 경우에 해당하는 조건,,인가,,?
                     continue
 
             else :
@@ -232,10 +220,7 @@ if __name__=="__main__":
                                 pos = index
                                 next_index=index+1
                                 next_input_char = inputString[next_index]
-                            # - 뒤 0이 올 경우
-                                #if next_input_char == '0':
-
-                                    #pass
+                            
                             # - 뒤 숫자가 올 경우
                                 if next_input_char.isdigit():
                                     pos = len(state) 
