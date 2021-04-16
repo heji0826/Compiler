@@ -1,4 +1,4 @@
-from dfa_tables import ARITHMETIC_OPERATOR,COMPARISON_1,COMPARISON_2,COMPARISON_3,COMPARISON_4,COMPARISON_5,SIGN_INTEGER,IDENTIFIER,BRACE,ZERO,LITERAL_STRING,SINGLE_CHARACTER,PAREN,BRACKET,WHITESPACE,SEPARATE,SEMI,ASSIGN,BOOL_STRING,VARIABLE_TYPE,KEYWORD,DDAOM_ERROR
+from dfa_tables import ARITHMETIC_OPERATOR,COMPARISON_1,COMPARISON_2,COMPARISON_3,COMPARISON_4,COMPARISON_5,SIGN_INTEGER,ID,BRACE,ZERO,LITERAL_STRING,SINGLE_CHARACTER,PAREN,BRACKET,WHITESPACE,SEPARATE,SEMI,ASSIGN,BOOL,VARIABLE_TYPE,KEYWORD,DDAOM_ERROR
 
 
 class FiniteAutomaton:
@@ -21,7 +21,7 @@ class FiniteAutomaton:
      # table name을 return하는 함수
     def PeekNextState(self, _input, _origin_digit=None): 
         # table에 input 들어가기전에 input 형태 변경해주기     
-        if _input.isalpha() and self.GetTableName()=='IDENTIFIER' :
+        if _input.isalpha() and self.GetTableName()=='ID' :
             _input='LETTER'
 
         elif _input.isalpha() and self.GetTableName()=='SINGLE_CHARACTER' :
@@ -107,8 +107,8 @@ if __name__=="__main__":
     error_line=0
 
     # 우선순위 순으로 포함시켜야함 ! 
-    transition_table_1=[ARITHMETIC_OPERATOR,SIGN_INTEGER,SINGLE_CHARACTER,LITERAL_STRING,DDAOM_ERROR,IDENTIFIER,BRACE,PAREN,BRACKET,ZERO,COMPARISON_3,COMPARISON_2,COMPARISON_4,COMPARISON_5,COMPARISON_1,WHITESPACE,SEPARATE,SEMI,ASSIGN]
-    transition_table_2=[BOOL_STRING,VARIABLE_TYPE,KEYWORD]
+    transition_table_1=[ARITHMETIC_OPERATOR,SIGN_INTEGER,SINGLE_CHARACTER,LITERAL_STRING,DDAOM_ERROR,ID,BRACE,PAREN,BRACKET,ZERO,COMPARISON_3,COMPARISON_2,COMPARISON_4,COMPARISON_5,COMPARISON_1,WHITESPACE,SEPARATE,SEMI,ASSIGN]
+    transition_table_2=[BOOL,VARIABLE_TYPE,KEYWORD]
 
     dfa = FiniteAutomaton()
 
@@ -151,7 +151,7 @@ if __name__=="__main__":
                                     temp_input_char.append(origin_input_char)
                                     str_temp_input_char=''.join(temp_input_char)
 
-                                    if dfa.GetTableName() == 'IDENTIFIER':
+                                    if dfa.GetTableName() == 'ID':
                                         change_dfa = FiniteAutomaton()
                                         is_identifier=0
                                         for i in range(0,len(transition_table_2)):
@@ -294,7 +294,7 @@ if __name__=="__main__":
                                             temp_getTableName = "SIGN_INTEGER"
                                             break
                                         # 다음 input이 0이거나, 전 input이 숫자거나 identifier일 때에만 OP로 처리
-                                        elif (state[pos-1] == "ID" or state[pos-1] == "INTEGER" or next_input_char== '0') :
+                                        elif (state[pos-1] == "ID" or state[pos-1] == "INTEGER" or state[pos-1] == "SINGLE_CHARACTER" or next_input_char== '0') :
                                             pass
                                         # 나머지의 경우 음수로 처리
                                         else:
