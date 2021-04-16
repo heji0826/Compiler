@@ -1,0 +1,5 @@
+-8 > < >= <= == != 0-3
+string = "hello my name is hyeji123"
+'a' - 3
+a, b, c
+10--1

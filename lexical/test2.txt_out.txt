@@ -1,0 +1,7 @@
+<ID,public>, <CLASS,class>, <ID,Main>, <LBRACE,{>, 
+<ID,public>, <ID,static>, <ID,void>, <ID,main>, <LPAREN,(>, <ID,String>, <LBRACKET,[>, <RBRACKET,]>, <ID,args>, <RPAREN,)>, <LBRACE,{>, 
+<VTYPE,int>, <ID,i>, <ASSIGN,=>, <INTEGER,1>, <SEMI,;>, 
+<VTYPE,boolean>, <ID,b>, <ASSIGN,=>, <BOOL,true>, <SEMI,;>, 
+<VTYPE,char>, <ID,c>, <ASSIGN,=>, <CHAR,'a'>, <SEMI,;>, 
+<RBRACE,}>, 
+<RBRACE,}>, 

@@ -1,0 +1,2 @@
+Error : 'a is unknown symbol(s)
+    File "test4.txt", line_number 1

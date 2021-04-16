@@ -1,0 +1,5 @@
+<INTEGER,-8>, <COMPARISON,>>, <COMPARISON,<>, <COMPARISON,>=>, <COMPARISON,<=>, <COMPARISON,==>, <COMPARISON,!=>, <INTEGER,0>, <OP,->, <INTEGER,3>, 
+<VTYPE,string>, <ASSIGN,=>, <LITERAL,"hello my name is hyeji123">, 
+<CHAR,'a'>, <OP,->, <INTEGER,3>, 
+<ID,a>, <SEPARATE,,>, <ID,b>, <SEPARATE,,>, <ID,c>, 
+<INTEGER,10>, <OP,->, <INTEGER,-1>, 

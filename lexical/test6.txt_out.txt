@@ -1,0 +1,2 @@
+Error : "i like compiler  is unknown symbol(s)
+    File "test6.txt", line_number 3
