@@ -75,17 +75,18 @@ class FiniteAutomaton:
 
 if __name__=="__main__":
     filename = input()
-    f = open("./lexical/"+filename+".txt", 'r')
+    f = open("./lexical/"+filename, 'r')
     readlines = f.readlines()
     
     lines=[]
     for line in readlines:
         if line.find('\n') != -1 :
             line=line[:-1]
-        lines.append(line)
+            # line=line+" "
+        lines.append(line+" ")
     f.close()
 
-    out_f = open("./lexical/"+filename+"_out"+".txt", 'w')
+    out_f = open("./lexical/"+filename+"_out.txt", 'w')
     
 
     # 우선순위 순으로 포함시켜야함 ! 
