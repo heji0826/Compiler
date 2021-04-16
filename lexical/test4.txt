@@ -1,0 +1,5 @@
+'C' '3' 'a1'
+"i like compiler 123" 
+^&*
+"i like compiler ~ ! "
+""'' return '' if -0

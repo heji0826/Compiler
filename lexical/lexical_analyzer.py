@@ -179,7 +179,7 @@ if __name__=="__main__":
                                         if dfa.GetToken()=='Error':
                                             out_f.close()
                                             # open("./lexical/"+filename+"_out.txt", 'w')
-                                            with open("./lexical/"+filename+"_out.txt", 'w') as error_f:
+                                            with open("./lexical/"+filename[:-4]+".out.txt", 'w') as error_f:
                                                 error_line=line_number+1
                                                 error_f.writelines(print_error_text(str_temp_input_char,filename,error_line))
                                             exit()
@@ -221,7 +221,7 @@ if __name__=="__main__":
                                     if dfa.GetToken()=='Error':
                                         out_f.close()
                                         # open("./lexical/"+filename+"_out.txt", 'w')
-                                        with open("./lexical/"+filename+"_out.txt", 'w') as error_f:
+                                        with open("./lexical/"+filename[:-4]+".out.txt", 'w') as error_f:
                                             error_line=line_number+1
                                             error_f.writelines(print_error_text(str_temp_input_char,filename,error_line))
                                         exit()
@@ -258,7 +258,7 @@ if __name__=="__main__":
                                 data="<"+dfa.GetToken()+","+input_char+">, "
                                 if dfa.GetToken()=='Error':
                                     out_f.close()
-                                    with open("./lexical/"+filename+"_out.txt", 'w') as error_f:
+                                    with open("./lexical/"+filename[:-4]+".out.txt", 'w') as error_f:
                                         error_line=line_number+1
                                         error_f.writelines(print_error_text(input_char,filename,error_line))
                                     exit()
@@ -284,7 +284,7 @@ if __name__=="__main__":
                                     pos = index
                                     next_index=index+1
                                     next_input_char = inputString[next_index]
-                                
+                                    
                                 # - 뒤 숫자가 올 경우
                                     if next_input_char.isdigit():
                                         pos = len(state) 
