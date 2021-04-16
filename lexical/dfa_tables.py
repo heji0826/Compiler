@@ -163,8 +163,8 @@ ARITHMETIC_OPERATOR = {
     }
 }
 
-BOOL_STRING = {
-    "Name" : "BOOL_STRING",
+BOOL = {
+    "Name" : "BOOL",
     "AcceptedStates": {
         "T1": "BOOL",
         "T2": "BOOL",
@@ -178,8 +178,8 @@ BOOL_STRING = {
 
 
 
-IDENTIFIER = {
-    "Name" : "IDENTIFIER",
+ID = {
+    "Name" : "ID",
     "AcceptedStates": {
         "T1": "ID",
         "T2": "ID",
