@@ -74,10 +74,20 @@ class FiniteAutomaton:
  
 
 if __name__=="__main__":
-    f = open("./lexical/input.txt", 'r')
-    inputString = f.read()
-    inputString = inputString+" "
+    filename = input()
+    f = open("./lexical/"+filename+".txt", 'r')
+    readlines = f.readlines()
+    
+    lines=[]
+    for line in readlines:
+        if line.find('\n') != -1 :
+            line=line[:-1]
+        lines.append(line)
     f.close()
+
+    out_f = open(filename+"_out"+".txt", 'w')
+    
+
     # 우선순위 순으로 포함시켜야함 ! 
     transition_table_1=[ARITHMETIC_OPERATOR,SIGN_INTEGER,SINGLE_CHARACTER,LITERAL_STRING,DDAOM_ERROR,IDENTIFIER,BRACE,PAREN,BRACKET,ZERO,COMPARISON_3,COMPARISON_2,COMPARISON_4,COMPARISON_5,COMPARISON_1,WHITESPACE,SEPARATE,SEMI,ASSIGN]
     transition_table_2=[BOOL_STRING,VARIABLE_TYPE,KEYWORD]
@@ -88,198 +98,224 @@ if __name__=="__main__":
     temp_getTableName = ""
     state = []
 
-    for index, input_char in enumerate(inputString) :
-        for i in range(0,len(transition_table_1)):
-            dfa.LoadTransitionTable(transition_table_1[i])
-            if temp_getTableName != "": 
+    for inputString in lines:
+        for index, input_char in enumerate(inputString) :
+            for i in range(0,len(transition_table_1)):
+                dfa.LoadTransitionTable(transition_table_1[i])
+                if temp_getTableName != "": 
 
-                if input_char.isdigit():
-                    input_char="DIGIT"                
-                if dfa.GetTableName()==temp_getTableName:
-                    nextState = dfa.PeekNextState(input_char)
-                    dfa.SetState(nextState)
+                    if input_char.isdigit():
+                        input_char="DIGIT"                
+                    if dfa.GetTableName()==temp_getTableName:
+                        nextState = dfa.PeekNextState(input_char)
+                        dfa.SetState(nextState)
 
-                    if dfa.IsAccepted():
-                        next_index=index+1
-                        next_input_char = inputString[next_index]
-                        if next_input_char.isdigit():
-                            next_input_char="DIGIT"
-
-                        next_input_state = dfa.PeekNextState(next_input_char)
-
-                        # 원래 input 값 origin_input_char 변수에 두기
-                        if input_char=='DIGIT':
-                                origin_input_char=inputString[index]
-                        else :
-                            origin_input_char=input_char
-
-                        if next_input_state != 'Error' and next_input_state != 'Rejected':
-                            temp_input_char.append(origin_input_char)
-                            temp_getTableName = dfa.GetTableName()
-                            break
-                        else:
-                            temp_input_char.append(origin_input_char)
-                            str_temp_input_char=''.join(temp_input_char)
-
-                            if dfa.GetTableName() == 'IDENTIFIER':
-                                change_dfa = FiniteAutomaton()
-                                is_identifier=0
-                                for i in range(0,len(transition_table_2)):
-                                    change_dfa.LoadTransitionTable(transition_table_2[i])
-                                    
-                                    if change_dfa.PeekNextState(str_temp_input_char)=="Error" :
-                                        is_identifier=is_identifier+1
-                                        if is_identifier==3:
-                                            print("<",dfa.GetToken(),",",str_temp_input_char,">,")
-                                            state.append(dfa.GetToken())
-                                        else:
-                                            continue
-                                    else :
-                                        nextState = change_dfa.PeekNextState(str_temp_input_char)
-                                        change_dfa.SetState(nextState)
-                                        if change_dfa.IsAccepted():
-                                            print("<",change_dfa.GetToken(),",",str_temp_input_char,">,")
-                                            state.append(change_dfa.GetToken())
-                                            break 
-                                change_dfa.Reset()
-                            else :
-                                print("<",dfa.GetToken(),",",str_temp_input_char,">,")
-                                state.append(dfa.GetToken())
-
-                            
-                            temp_input_char = [] #초기화
-                            temp_getTableName = "" #초기화
-                            dfa.Reset()
-                            break
-                    else :
-                        # single character이나 literal 아직 끝마무리 안되었을때
-                        next_index=index+1
-                        next_input_char = inputString[next_index]
-
-                        if next_input_char.isdigit():
-                            next_input_char="DIGIT"
-
-                        next_input_state = dfa.PeekNextState(next_input_char)
-
-                        # 원래 input 값 origin_input_char 변수에 두기
-                        if input_char=='DIGIT':
-                                origin_input_char=inputString[index]
-                        else :
-                            origin_input_char=input_char
-
-                        if next_input_state != 'Error' and next_input_state != 'Rejected':
-                            temp_input_char.append(origin_input_char)
-                            temp_getTableName = dfa.GetTableName()
-                            break
-                        else:
-                            temp_input_char.append(origin_input_char)
-                            str_temp_input_char=''.join(temp_input_char)
-                            print("<",dfa.GetToken(),",",str_temp_input_char,">,")
-                            state.append(dfa.GetToken())
-
-                            
-                            temp_input_char = [] #초기화
-                            temp_getTableName = "" #초기화
-                            dfa.Reset()
-                            break
-
-                else:
-                    continue
-
-            else :
-
-                if dfa.PeekNextState(input_char)=="Error" :
-                    if input_char == '"':
+                        if dfa.IsAccepted():
                             next_index=index+1
-                            next_input_char = inputString[next_index]
-                            if(next_input_char=='"'):
-                                temp_input_char.append(input_char)
-                                temp_getTableName = "DDAOM_ERROR"
-                                break                                            
-                    if i == len(transition_table_1)-1:
-                        if input_char=='<':
-                            print("<","COMPARISON",",",input_char,">")
+                            try:
+                                next_input_char = inputString[next_index]
+                                if next_input_char.isdigit():
+                                    next_input_char="DIGIT"
+
+                                next_input_state = dfa.PeekNextState(next_input_char)
+
+                                # 원래 input 값 origin_input_char 변수에 두기
+                                if input_char=='DIGIT':
+                                        origin_input_char=inputString[index]
+                                else :
+                                    origin_input_char=input_char
+
+                                if next_input_state != 'Error' and next_input_state != 'Rejected':
+                                    temp_input_char.append(origin_input_char)
+                                    temp_getTableName = dfa.GetTableName()
+                                    break
+                                else:
+                                    temp_input_char.append(origin_input_char)
+                                    str_temp_input_char=''.join(temp_input_char)
+
+                                    if dfa.GetTableName() == 'IDENTIFIER':
+                                        change_dfa = FiniteAutomaton()
+                                        is_identifier=0
+                                        for i in range(0,len(transition_table_2)):
+                                            change_dfa.LoadTransitionTable(transition_table_2[i])
+                                            
+                                            if change_dfa.PeekNextState(str_temp_input_char)=="Error" :
+                                                is_identifier=is_identifier+1
+                                                if is_identifier==3:
+                                                    data="<"+dfa.GetToken()+","+str_temp_input_char+">, "
+                                                    out_f.write(data)
+                                                    state.append(dfa.GetToken())
+                                                else:
+                                                    continue
+                                            else :
+                                                nextState = change_dfa.PeekNextState(str_temp_input_char)
+                                                change_dfa.SetState(nextState)
+                                                if change_dfa.IsAccepted():
+                                                    # print("<",change_dfa.GetToken(),",",str_temp_input_char,">,")
+                                                    data="<"+change_dfa.GetToken()+","+str_temp_input_char+">, "
+                                                    out_f.write(data)
+                                                    state.append(change_dfa.GetToken())
+                                                    break 
+                                        change_dfa.Reset()
+                                    else :
+                                        # print("<",dfa.GetToken(),",",str_temp_input_char,">,")
+                                        data="<"+dfa.GetToken()+","+str_temp_input_char+">, "
+                                        out_f.write(data)
+                                        state.append(dfa.GetToken())
+
+                                    
+                                    temp_input_char = [] #초기화
+                                    temp_getTableName = "" #초기화
+                                    dfa.Reset()
+                                    break
+                            except IndexError:
+                                # !!!
+                                pass
                         else :
-                            print("<",dfa.GetToken(),",",input_char,">")
-                    dfa.Reset()
+                            # single character이나 literal 아직 끝마무리 안되었을때
+                            next_index=index+1
+                            try :
+                                next_input_char = inputString[next_index]
+
+                                if next_input_char.isdigit():
+                                    next_input_char="DIGIT"
+
+                                next_input_state = dfa.PeekNextState(next_input_char)
+
+                                # 원래 input 값 origin_input_char 변수에 두기
+                                if input_char=='DIGIT':
+                                        origin_input_char=inputString[index]
+                                else :
+                                    origin_input_char=input_char
+
+                                if next_input_state != 'Error' and next_input_state != 'Rejected':
+                                    temp_input_char.append(origin_input_char)
+                                    temp_getTableName = dfa.GetTableName()
+                                    break
+                                else:
+                                    temp_input_char.append(origin_input_char)
+                                    str_temp_input_char=''.join(temp_input_char)
+                                    # print("<",dfa.GetToken(),",",str_temp_input_char,">,")
+                                    data="<"+dfa.GetToken()+","+str_temp_input_char+">, "
+                                    out_f.write(data)
+                                    state.append(dfa.GetToken())
+                                    
+                                    temp_input_char = [] #초기화
+                                    temp_getTableName = "" #초기화
+                                    dfa.Reset()
+                                    break
+                            except IndexError :
+                                # !! 
+                                pass
+
+                    else:
+                        continue
 
                 else :
-                    nextState = dfa.PeekNextState(input_char)
-                    dfa.SetState(nextState)
-                    if dfa.IsAccepted():
-                        try:                                                 
-                            next_index=index+1
-                            next_input_char = inputString[next_index]
 
-                            if next_input_char.isdigit():
-                                next_input_char="DIGIT"
-                            next_input_state = dfa.PeekNextState(next_input_char)
-                            
-                            # - 토큰 처리
-                            if input_char=="-":
-                                pos = index
+                    if dfa.PeekNextState(input_char)=="Error" :
+                        if input_char == '"':
                                 next_index=index+1
                                 next_input_char = inputString[next_index]
-                            
-                            # - 뒤 숫자가 올 경우
+                                if(next_input_char=='"'):
+                                    temp_input_char.append(input_char)
+                                    temp_getTableName = "DDAOM_ERROR"
+                                    break                                            
+                        if i == len(transition_table_1)-1:
+                            if input_char=='<':
+                                # print("<","COMPARISON",",",input_char,">")
+                                data="<"+"COMPARISON"+","+input_char+">, "
+                                out_f.write(data)
+                            else :
+                                # print("2<",dfa.GetToken(),",",input_char,">")
+                                data="<"+dfa.GetToken()+","+input_char+">, "
+                                out_f.write(data)
+                        dfa.Reset()
+
+                    else :
+                        nextState = dfa.PeekNextState(input_char)
+                        dfa.SetState(nextState)
+                        if dfa.IsAccepted():
+                            try:                                                 
+                                next_index=index+1
+                                next_input_char = inputString[next_index]
+
                                 if next_input_char.isdigit():
-                                    pos = len(state) 
-                                    if pos == 0:
-                                        temp_input_char.append(input_char)
-                                        temp_getTableName = "SIGN_INTEGER"
-                                        break
-                                    elif (state[pos-1] == "ID" or state[pos-1] == "INTEGER" or next_input_char== '0') :
-                                        pass
+                                    next_input_char="DIGIT"
+                                next_input_state = dfa.PeekNextState(next_input_char)
+                                
+                                # - 토큰 처리
+                                if input_char=="-":
+                                    pos = index
+                                    next_index=index+1
+                                    next_input_char = inputString[next_index]
+                                
+                                # - 뒤 숫자가 올 경우
+                                    if next_input_char.isdigit():
+                                        pos = len(state) 
+                                        if pos == 0:
+                                            temp_input_char.append(input_char)
+                                            temp_getTableName = "SIGN_INTEGER"
+                                            break
+                                        elif (state[pos-1] == "ID" or state[pos-1] == "INTEGER" or next_input_char== '0') :
+                                            pass
+                                        else:
+                                            temp_input_char.append(input_char)
+                                            temp_getTableName = "SIGN_INTEGER"
+                                            break                                                                           
+                                if input_char=="=":
+                                    if next_input_char == "=":
+                                            temp_input_char.append(input_char)
+                                            temp_getTableName = "COMPARISON_2"
+                                            break 
                                     else:
-                                        temp_input_char.append(input_char)
-                                        temp_getTableName = "SIGN_INTEGER"
-                                        break                                                                           
-                            if input_char=="=":
-                                if next_input_char == "=":
-                                        temp_input_char.append(input_char)
-                                        temp_getTableName = "COMPARISON_2"
-                                        break 
+                                        pass  
+                                if next_input_state != 'Error' and next_input_state != 'Rejected':
+                                    temp_input_char.append(input_char)
+                                    temp_getTableName = dfa.GetTableName()
+                                    break                        
                                 else:
-                                    pass  
-                            if next_input_state != 'Error' and next_input_state != 'Rejected':
-                                temp_input_char.append(input_char)
-                                temp_getTableName = dfa.GetTableName()
-                                break                        
-                            else:
+                                    if dfa.GetToken()=="WHITESPACE":
+                                        dfa.Reset()
+                                        break                              
+                                    else :
+                                        state.append(dfa.GetToken())                                    
+                                        # print("<",dfa.GetToken(),",",input_char,">,")
+                                        data="<"+dfa.GetToken()+","+input_char+">, "
+                                        out_f.write(data)
+                                        dfa.Reset()
+                                        break
+                            except IndexError:
                                 if dfa.GetToken()=="WHITESPACE":
+                                        dfa.Reset()
+                                        break
+                                else:
+                                    # print("<",dfa.GetToken(),",",input_char,">,")
+                                    data="<"+dfa.GetToken()+","+input_char+">, "
+                                    out_f.write(data)
+                                    state.append(dfa.GetToken())
                                     dfa.Reset()
-                                    break                              
-                                else :
-                                    state.append(dfa.GetToken())                                    
-                                    print("<",dfa.GetToken(),",",input_char,">,")
-                                    dfa.Reset()
-                                    break
-                        except IndexError:
-                            if dfa.GetToken()=="WHITESPACE":
-                                    dfa.Reset()
-                                    break
-                            else:
-                                print("<",dfa.GetToken(),",",input_char,">,")
-                                state.append(dfa.GetToken())
-                    
-                    else:
-                        #single_character이랑 literal_string 부분이 여기로 들어옴
-                        try:
-                            next_index=index+1
-                            next_input_char = inputString[next_index]
-                            if next_input_char.isdigit():
-                                next_input_char="DIGIT"
+                        
+                        else:
+                            #single_character이랑 literal_string 부분이 여기로 들어옴
+                            try:
+                                next_index=index+1
+                                next_input_char = inputString[next_index]
+                                if next_input_char.isdigit():
+                                    next_input_char="DIGIT"
 
-                            next_input_state = dfa.PeekNextState(next_input_char)
+                                next_input_state = dfa.PeekNextState(next_input_char)
 
-                            if next_input_state != 'Error' and next_input_state != 'Rejected':
-                                temp_input_char.append(input_char)
-                                temp_getTableName = dfa.GetTableName()
-                                break
-
-                        except IndexError:
-                            if dfa.GetToken()=="WHITESPACE":
-                                    dfa.Reset()
+                                if next_input_state != 'Error' and next_input_state != 'Rejected':
+                                    temp_input_char.append(input_char)
+                                    temp_getTableName = dfa.GetTableName()
                                     break
-                            else:
-                                pass
+
+                            except IndexError:
+                                if dfa.GetToken()=="WHITESPACE":
+                                        dfa.Reset()
+                                        break
+                                else:
+                                    pass
+        out_f.write('\n')
+    out_f.close()
