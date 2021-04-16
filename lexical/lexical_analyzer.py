@@ -294,7 +294,7 @@ if __name__=="__main__":
                                             temp_getTableName = "SIGN_INTEGER"
                                             break
                                         # 다음 input이 0이거나, 전 input이 숫자거나 identifier일 때에만 OP로 처리
-                                        elif (state[pos-1] == "ID" or state[pos-1] == "INTEGER" or state[pos-1] == "SINGLE_CHARACTER" or next_input_char== '0') :
+                                        elif (state[pos-1] == "ID" or state[pos-1] == "INTEGER" or state[pos-1] == "CHAR" or next_input_char== '0') :
                                             pass
                                         # 나머지의 경우 음수로 처리
                                         else:
