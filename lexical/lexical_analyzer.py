@@ -85,7 +85,7 @@ if __name__=="__main__":
         lines.append(line)
     f.close()
 
-    out_f = open(filename+"_out"+".txt", 'w')
+    out_f = open("./lexical/"+filename+"_out"+".txt", 'w')
     
 
     # 우선순위 순으로 포함시켜야함 ! 
@@ -319,3 +319,4 @@ if __name__=="__main__":
                                     pass
         out_f.write('\n')
     out_f.close()
+    print("성공적으로 출력파일이 생성되었습니다.")

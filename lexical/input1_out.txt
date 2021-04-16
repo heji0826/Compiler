@@ -1,6 +1,6 @@
 <INTEGER,1>, <OP,->, <INTEGER,7>, <OP,/>, <INTEGER,-4>, <INTEGER,123>, <INTEGER,0>, <INTEGER,78>, <INTEGER,708>, <INTEGER,780>, <ID,a13>, <ID,a__431>, <INTEGER,0>, <INTEGER,0>, <OP,->, <INTEGER,8>, <Error,8>, 
-<OP,->, <INTEGER,0>, <INTEGER,0>, <ID,abc0>, <INTEGER,123>, <KEYWORD,if>, <INTEGER,123>, <ID,if0>, <CHAR,' '>, <ID,a>, <OP,->, <INTEGER,1>, <Error,1>, 
-<VTYPE,int>, <ID,main>, <LPAREN,(>, <RPAREN,)>, <LBRACE,{>, <VTYPE,char>, <ID,if123>, <ASSIGN,=>, <CHAR,'1'>, <SEMI,;>, <VTYPE,int>, <INTEGER,0>, <ID,a>, <ASSIGN,=>, <ID,a>, <OP,+>, <INTEGER,-1>, <SEMI,;>, <KEYWORD,return>, <OP,->, <INTEGER,0>, <SEMI,;>, <RBRACE,}>, <Error,}>, 
+<OP,->, <INTEGER,0>, <INTEGER,0>, <ID,abc0>, <INTEGER,123>, <IF,if>, <INTEGER,123>, <ID,if0>, <CHAR,' '>, <ID,a>, <OP,->, <INTEGER,1>, <Error,1>, 
+<VTYPE,int>, <ID,main>, <LPAREN,(>, <RPAREN,)>, <LBRACE,{>, <VTYPE,char>, <ID,if123>, <ASSIGN,=>, <CHAR,'1'>, <SEMI,;>, <VTYPE,int>, <INTEGER,0>, <ID,a>, <ASSIGN,=>, <ID,a>, <OP,+>, <INTEGER,-1>, <SEMI,;>, <RETURN,return>, <OP,->, <INTEGER,0>, <SEMI,;>, <RBRACE,}>, <Error,}>, 
 <INTEGER,0>, <INTEGER,0>, <INTEGER,1>, <INTEGER,0>, <INTEGER,0>, <INTEGER,10>, <INTEGER,0>, <INTEGER,0>, <INTEGER,10>, <ID,a0010>, <INTEGER,0>, <INTEGER,0>, <INTEGER,10>, <OP,->, <INTEGER,-10>, <INTEGER,0>, <INTEGER,0>, <INTEGER,10>, <OP,->, <INTEGER,10>, 
 <LITERAL,"muyahooooooo 123">, 
 <COMPARISON,>>, <COMPARISON,<>, <COMPARISON,<=>, <COMPARISON,>=>, <COMPARISON,==>, <ASSIGN,=>, <COMPARISON,!=>, <COMPARISON,==>, <ASSIGN,=>, <COMPARISON,==>, <COMPARISON,==>, <ASSIGN,=>, <INTEGER,3>, <ID,a>, <Error,a>, 
