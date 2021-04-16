@@ -8,14 +8,17 @@ class FiniteAutomaton:
         self.acceptedStates = {}
         self.tableName = ""
 
+    # dfa table을 가져오는 함수
     def LoadTransitionTable(self, _dfa):
         self.table = _dfa["Table"]
         self.acceptedStates=_dfa["AcceptedStates"]
         self.tableName =_dfa["Name"]
 
+    # table name을 return하는 함수  
     def GetTableName(self):
         return self.tableName
  
+     # table name을 return하는 함수
     def PeekNextState(self, _input, _origin_digit=None): 
         # table에 input 들어가기전에 input 형태 변경해주기     
         if _input.isalpha() and self.GetTableName()=='IDENTIFIER' :
@@ -31,9 +34,11 @@ class FiniteAutomaton:
             if _input != '0':
                 _input='EXCEPT_ZERO'
 
+        # 현재 상태에 해당하는 table이 없을 경우
         if not self.currentState in self.table:
             return "Error"
         else :
+            # input에 해당하는 state가 없을 경우
             if not _input in self.table[self.currentState]:
                 return "Error"
         
@@ -44,51 +49,59 @@ class FiniteAutomaton:
 
         else:
             return nextState
-    
+
+    # 현재 state를 return하는 함수
     def GetState(self):
         return self.currentState
  
+    # 현재 state를 해당 state로 설정하는 함수
     def SetState(self, _state):
         self.currentState = _state
- 
+
+    # accept된 state를 반환하고, accept되지 않았을 경우 error를 return하는 함수
     def GetToken(self):
         if self.currentState in self.acceptedStates:
             return self.acceptedStates[self.currentState]
         else:
             return "Error"
  
+    # accept 되었을 경우 true를, 그렇지 않을 경우 false를 return하는 함수
     def IsAccepted(self):
         if self.currentState in self.acceptedStates:
             return True
         else:
             return False
 
+    # 해당 state가 accept 되었을 경우 true를, 그렇지 않을 경우 false를 return하는 함수
     def temp_IsAccepted(self,temp_currentState):
         if temp_currentState in self.acceptedStates:
             return True
         else:
             return False
- 
+    # 초기화해주는 함수
     def Reset(self):
         self.currentState = "T0"
  
+# error가 발생했을 때의 출력
 def print_error_text(input_char, filename,error_line):
     error_text=["Error : ",input_char," is unknown symbol(s)\n",'    File "',filename,'", line_number ',str(error_line)]
     return error_text
 
 if __name__=="__main__":
     filename = input()
+    # input 파일
     f = open("./lexical/"+filename, 'r')
+    # 한줄씩 읽어줌
     readlines = f.readlines()
-    
     lines=[]
     for line in readlines:
         if line.find('\n') != -1 :
             line=line[:-1]
-            # line=line+" "
+        # line=line+" "
         lines.append(line+" ")
     f.close()
 
+    # output파일
     out_f = open("./lexical/"+filename+"_out.txt", 'w')
 
     error_line=0
@@ -108,7 +121,7 @@ if __name__=="__main__":
             for i in range(0,len(transition_table_1)):
                 dfa.LoadTransitionTable(transition_table_1[i])
                 if temp_getTableName != "": 
-
+                    # input이 숫자일 경우 DIGIT으로 설정
                     if input_char.isdigit():
                         input_char="DIGIT"                
                     if dfa.GetTableName()==temp_getTableName:
@@ -266,7 +279,7 @@ if __name__=="__main__":
                                     next_input_char="DIGIT"
                                 next_input_state = dfa.PeekNextState(next_input_char)
                                 
-                                # - 토큰 처리
+                                # symbol - 처리
                                 if input_char=="-":
                                     pos = index
                                     next_index=index+1
@@ -275,21 +288,26 @@ if __name__=="__main__":
                                 # - 뒤 숫자가 올 경우
                                     if next_input_char.isdigit():
                                         pos = len(state) 
+                                        # -가 맨 첫번째로 올 경우 음수로 처리
                                         if pos == 0:
                                             temp_input_char.append(input_char)
                                             temp_getTableName = "SIGN_INTEGER"
                                             break
+                                        # 다음 input이 0이거나, 전 input이 숫자거나 identifier일 때에만 OP로 처리
                                         elif (state[pos-1] == "ID" or state[pos-1] == "INTEGER" or next_input_char== '0') :
                                             pass
+                                        # 나머지의 경우 음수로 처리
                                         else:
                                             temp_input_char.append(input_char)
                                             temp_getTableName = "SIGN_INTEGER"
-                                            break                                                                           
+                                            break  
+                                # = 기호 뒤에 = 가 나올 경우에 comparison으로 처리                                                                         
                                 if input_char=="=":
                                     if next_input_char == "=":
                                             temp_input_char.append(input_char)
                                             temp_getTableName = "COMPARISON_2"
                                             break 
+                                    # = 기호 뒤에 = 가 없는 경우 assign으로 처리
                                     else:
                                         pass  
                                 if next_input_state != 'Error' and next_input_state != 'Rejected':
