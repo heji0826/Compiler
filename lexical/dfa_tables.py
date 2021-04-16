@@ -248,11 +248,11 @@ LITERAL_STRING = {
 KEYWORD = {
     "Name" : "KEYWORD",
     "AcceptedStates": {
-        "T1": "KEYWORD",
-        "T2": "KEYWORD",
-        "T3": "KEYWORD",
-        "T4": "KEYWORD",
-        "T5": "KEYWORD",
+        "T1": "IF",
+        "T2": "ELSE",
+        "T3": "WHILE",
+        "T4": "CLASS",
+        "T5": "RETURN",
     },
     "Table": {
         "T0": {"if": "T1", "else": "T2", "while": "T3", "class":"T4", "return":"T5" },
