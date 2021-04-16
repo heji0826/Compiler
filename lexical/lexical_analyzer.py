@@ -72,6 +72,9 @@ class FiniteAutomaton:
     def Reset(self):
         self.currentState = "T0"
  
+def print_error_text(input_char, filename,error_line):
+    error_text=["Error : ",input_char," is unknown symbol(s)\n",'    File "',filename,'", line_number ',str(error_line)]
+    return error_text
 
 if __name__=="__main__":
     filename = input()
@@ -87,7 +90,8 @@ if __name__=="__main__":
     f.close()
 
     out_f = open("./lexical/"+filename+"_out.txt", 'w')
-    
+
+    error_line=0
 
     # 우선순위 순으로 포함시켜야함 ! 
     transition_table_1=[ARITHMETIC_OPERATOR,SIGN_INTEGER,SINGLE_CHARACTER,LITERAL_STRING,DDAOM_ERROR,IDENTIFIER,BRACE,PAREN,BRACKET,ZERO,COMPARISON_3,COMPARISON_2,COMPARISON_4,COMPARISON_5,COMPARISON_1,WHITESPACE,SEPARATE,SEMI,ASSIGN]
@@ -99,7 +103,7 @@ if __name__=="__main__":
     temp_getTableName = ""
     state = []
 
-    for inputString in lines:
+    for line_number, inputString in enumerate(lines):
         for index, input_char in enumerate(inputString) :
             for i in range(0,len(transition_table_1)):
                 dfa.LoadTransitionTable(transition_table_1[i])
@@ -152,25 +156,29 @@ if __name__=="__main__":
                                                 nextState = change_dfa.PeekNextState(str_temp_input_char)
                                                 change_dfa.SetState(nextState)
                                                 if change_dfa.IsAccepted():
-                                                    # print("<",change_dfa.GetToken(),",",str_temp_input_char,">,")
                                                     data="<"+change_dfa.GetToken()+","+str_temp_input_char+">, "
                                                     out_f.write(data)
                                                     state.append(change_dfa.GetToken())
                                                     break 
                                         change_dfa.Reset()
                                     else :
-                                        # print("<",dfa.GetToken(),",",str_temp_input_char,">,")
                                         data="<"+dfa.GetToken()+","+str_temp_input_char+">, "
-                                        out_f.write(data)
-                                        state.append(dfa.GetToken())
+                                        if dfa.GetToken()=='Error':
+                                            out_f.close()
+                                            # open("./lexical/"+filename+"_out.txt", 'w')
+                                            with open("./lexical/"+filename+"_out.txt", 'w') as error_f:
+                                                error_line=line_number+1
+                                                error_f.writelines(print_error_text(str_temp_input_char,filename,error_line))
+                                            exit()
+                                        else :
+                                            out_f.write(data)
+                                            state.append(dfa.GetToken())
 
-                                    
                                     temp_input_char = [] #초기화
                                     temp_getTableName = "" #초기화
                                     dfa.Reset()
                                     break
                             except IndexError:
-                                # !!!
                                 pass
                         else :
                             # single character이나 literal 아직 끝마무리 안되었을때
@@ -196,10 +204,17 @@ if __name__=="__main__":
                                 else:
                                     temp_input_char.append(origin_input_char)
                                     str_temp_input_char=''.join(temp_input_char)
-                                    # print("<",dfa.GetToken(),",",str_temp_input_char,">,")
                                     data="<"+dfa.GetToken()+","+str_temp_input_char+">, "
-                                    out_f.write(data)
-                                    state.append(dfa.GetToken())
+                                    if dfa.GetToken()=='Error':
+                                        out_f.close()
+                                        # open("./lexical/"+filename+"_out.txt", 'w')
+                                        with open("./lexical/"+filename+"_out.txt", 'w') as error_f:
+                                            error_line=line_number+1
+                                            error_f.writelines(print_error_text(str_temp_input_char,filename,error_line))
+                                        exit()
+                                    else :
+                                        out_f.write(data)
+                                        state.append(dfa.GetToken())
                                     
                                     temp_input_char = [] #초기화
                                     temp_getTableName = "" #초기화
@@ -224,13 +239,19 @@ if __name__=="__main__":
                                     break                                            
                         if i == len(transition_table_1)-1:
                             if input_char=='<':
-                                # print("<","COMPARISON",",",input_char,">")
                                 data="<"+"COMPARISON"+","+input_char+">, "
                                 out_f.write(data)
                             else :
-                                # print("2<",dfa.GetToken(),",",input_char,">")
                                 data="<"+dfa.GetToken()+","+input_char+">, "
-                                out_f.write(data)
+                                if dfa.GetToken()=='Error':
+                                    out_f.close()
+                                    with open("./lexical/"+filename+"_out.txt", 'w') as error_f:
+                                        error_line=line_number+1
+                                        error_f.writelines(print_error_text(input_char,filename,error_line))
+                                    exit()
+                                else :
+                                    out_f.write(data)
+                                    state.append(dfa.GetToken())
                         dfa.Reset()
 
                     else :
@@ -280,8 +301,7 @@ if __name__=="__main__":
                                         dfa.Reset()
                                         break                              
                                     else :
-                                        state.append(dfa.GetToken())                                    
-                                        # print("<",dfa.GetToken(),",",input_char,">,")
+                                        state.append(dfa.GetToken())                     
                                         data="<"+dfa.GetToken()+","+input_char+">, "
                                         out_f.write(data)
                                         dfa.Reset()
@@ -291,7 +311,6 @@ if __name__=="__main__":
                                         dfa.Reset()
                                         break
                                 else:
-                                    # print("<",dfa.GetToken(),",",input_char,">,")
                                     data="<"+dfa.GetToken()+","+input_char+">, "
                                     out_f.write(data)
                                     state.append(dfa.GetToken())
