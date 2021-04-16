@@ -1,48 +1,52 @@
 from dfa_tables import ARITHMETIC_OPERATOR,COMPARISON_1,COMPARISON_2,COMPARISON_3,COMPARISON_4,COMPARISON_5,SIGN_INTEGER,ID,BRACE,ZERO,LITERAL_STRING,SINGLE_CHARACTER,PAREN,BRACKET,WHITESPACE,SEPARATE,SEMI,ASSIGN,BOOL,VARIABLE_TYPE,KEYWORD,DDAOM_ERROR
 
+# error가 발생했을 때, output파일의 텍스트 출력해주는 함수
+def print_error_text(input_char, filename,error_line):
+    error_text=["Error : ",input_char," is unknown symbol(s)\n",'    File "',filename,'", line_number ',str(error_line)]
+    return error_text
 
-class FiniteAutomaton:
+class DFAautomata:
     def __init__(self):
-        self.table = {}
-        self.currentState = "T0"
-        self.acceptedStates = {}
         self.tableName = ""
-
-    # dfa table을 가져오는 함수
-    def LoadTransitionTable(self, _dfa):
-        self.table = _dfa["Table"]
-        self.acceptedStates=_dfa["AcceptedStates"]
-        self.tableName =_dfa["Name"]
-
+        self.table = {}
+        self.crr_T = "T0"
+        self.acceptTN = {}
+        
     # table name을 return하는 함수  
     def GetTableName(self):
         return self.tableName
- 
+
+    # dfa table을 가져오는 함수
+    def GetTable(self, dfa):
+        self.table = dfa["Table"]
+        self.acceptTN=dfa["AcceptTN"]
+        self.tableName =dfa["Name"]
+
      # table name을 return하는 함수
-    def PeekNextState(self, _input, _origin_digit=None): 
+    def CheckNextState(self, input, _origin_digit=None): 
         # table에 input 들어가기전에 input 형태 변경해주기     
-        if _input.isalpha() and self.GetTableName()=='ID' :
-            _input='LETTER'
+        if input.isalpha() and self.GetTableName()=='ID' :
+            input='LETTER'
 
-        elif _input.isalpha() and self.GetTableName()=='SINGLE_CHARACTER' :
-           _input='LETTER'     
+        elif input.isalpha() and self.GetTableName()=='SINGLE_CHARACTER' :
+           input='LETTER'     
 
-        elif _input.isalpha() and self.GetTableName()=='LITERAL_STRING' :
-            _input='LETTER' 
+        elif input.isalpha() and self.GetTableName()=='LITERAL_STRING' :
+            input='LETTER' 
         
-        elif _input.isdigit():
-            if _input != '0':
-                _input='EXCEPT_ZERO'
+        elif input.isdigit():
+            if input != '0':
+                input='EXCEPT_ZERO'
 
         # 현재 상태에 해당하는 table이 없을 경우
-        if not self.currentState in self.table:
+        if not self.crr_T in self.table:
             return "Error"
         else :
             # input에 해당하는 state가 없을 경우
-            if not _input in self.table[self.currentState]:
+            if not input in self.table[self.crr_T]:
                 return "Error"
         
-        nextState = self.table[self.currentState][_input]
+        nextState = self.table[self.crr_T][input]
 
         if nextState == "":
             return "Rejected"
@@ -50,42 +54,29 @@ class FiniteAutomaton:
         else:
             return nextState
 
-    # 현재 state를 return하는 함수
-    def GetState(self):
-        return self.currentState
- 
     # 현재 state를 해당 state로 설정하는 함수
-    def SetState(self, _state):
-        self.currentState = _state
+    def SetState(self, state):
+        self.crr_T = state
 
     # accept된 state를 반환하고, accept되지 않았을 경우 error를 return하는 함수
     def GetToken(self):
-        if self.currentState in self.acceptedStates:
-            return self.acceptedStates[self.currentState]
+        if self.crr_T in self.acceptTN:
+            return self.acceptTN[self.crr_T]
         else:
             return "Error"
  
     # accept 되었을 경우 true를, 그렇지 않을 경우 false를 return하는 함수
     def IsAccepted(self):
-        if self.currentState in self.acceptedStates:
+        if self.crr_T in self.acceptTN:
             return True
         else:
             return False
 
-    # 해당 state가 accept 되었을 경우 true를, 그렇지 않을 경우 false를 return하는 함수
-    def temp_IsAccepted(self,temp_currentState):
-        if temp_currentState in self.acceptedStates:
-            return True
-        else:
-            return False
     # 초기화해주는 함수
     def Reset(self):
-        self.currentState = "T0"
+        self.crr_T  = "T0"
  
-# error가 발생했을 때의 출력
-def print_error_text(input_char, filename,error_line):
-    error_text=["Error : ",input_char," is unknown symbol(s)\n",'    File "',filename,'", line_number ',str(error_line)]
-    return error_text
+
 
 if __name__=="__main__":
     filename = input()
@@ -110,7 +101,7 @@ if __name__=="__main__":
     transition_table_1=[ARITHMETIC_OPERATOR,SIGN_INTEGER,SINGLE_CHARACTER,LITERAL_STRING,DDAOM_ERROR,ID,BRACE,PAREN,BRACKET,ZERO,COMPARISON_3,COMPARISON_2,COMPARISON_4,COMPARISON_5,COMPARISON_1,WHITESPACE,SEPARATE,SEMI,ASSIGN]
     transition_table_2=[BOOL,VARIABLE_TYPE,KEYWORD]
 
-    dfa = FiniteAutomaton()
+    dfa = DFAautomata()
 
     temp_input_char = []
     temp_getTableName = ""
@@ -119,13 +110,13 @@ if __name__=="__main__":
     for line_number, inputString in enumerate(lines):
         for index, input_char in enumerate(inputString) :
             for i in range(0,len(transition_table_1)):
-                dfa.LoadTransitionTable(transition_table_1[i])
+                dfa.GetTable(transition_table_1[i])
                 if temp_getTableName != "": 
                     # input이 숫자일 경우 DIGIT으로 설정
                     if input_char.isdigit():
                         input_char="DIGIT"                
                     if dfa.GetTableName()==temp_getTableName:
-                        nextState = dfa.PeekNextState(input_char)
+                        nextState = dfa.CheckNextState(input_char)
                         dfa.SetState(nextState)
 
                         if dfa.IsAccepted():
@@ -135,7 +126,7 @@ if __name__=="__main__":
                                 if next_input_char.isdigit():
                                     next_input_char="DIGIT"
 
-                                next_input_state = dfa.PeekNextState(next_input_char)
+                                next_input_state = dfa.CheckNextState(next_input_char)
 
                                 # 원래 input 값 origin_input_char 변수에 두기
                                 if input_char=='DIGIT':
@@ -152,12 +143,12 @@ if __name__=="__main__":
                                     str_temp_input_char=''.join(temp_input_char)
 
                                     if dfa.GetTableName() == 'ID':
-                                        change_dfa = FiniteAutomaton()
+                                        change_dfa = DFAautomata()
                                         is_identifier=0
                                         for i in range(0,len(transition_table_2)):
-                                            change_dfa.LoadTransitionTable(transition_table_2[i])
+                                            change_dfa.GetTable(transition_table_2[i])
                                             
-                                            if change_dfa.PeekNextState(str_temp_input_char)=="Error" :
+                                            if change_dfa.CheckNextState(str_temp_input_char)=="Error" :
                                                 is_identifier=is_identifier+1
                                                 if is_identifier==3:
                                                     data="<"+dfa.GetToken()+","+str_temp_input_char+">, "
@@ -166,7 +157,7 @@ if __name__=="__main__":
                                                 else:
                                                     continue
                                             else :
-                                                nextState = change_dfa.PeekNextState(str_temp_input_char)
+                                                nextState = change_dfa.CheckNextState(str_temp_input_char)
                                                 change_dfa.SetState(nextState)
                                                 if change_dfa.IsAccepted():
                                                     data="<"+change_dfa.GetToken()+","+str_temp_input_char+">, "
@@ -202,7 +193,7 @@ if __name__=="__main__":
                                 if next_input_char.isdigit():
                                     next_input_char="DIGIT"
 
-                                next_input_state = dfa.PeekNextState(next_input_char)
+                                next_input_state = dfa.CheckNextState(next_input_char)
 
                                 # 원래 input 값 origin_input_char 변수에 두기
                                 if input_char=='DIGIT':
@@ -242,7 +233,7 @@ if __name__=="__main__":
 
                 else :
 
-                    if dfa.PeekNextState(input_char)=="Error" :
+                    if dfa.CheckNextState(input_char)=="Error" :
                         if input_char == '"':
                                 next_index=index+1
                                 next_input_char = inputString[next_index]
@@ -268,7 +259,7 @@ if __name__=="__main__":
                         dfa.Reset()
 
                     else :
-                        nextState = dfa.PeekNextState(input_char)
+                        nextState = dfa.CheckNextState(input_char)
                         dfa.SetState(nextState)
                         if dfa.IsAccepted():
                             try:                                                 
@@ -277,7 +268,7 @@ if __name__=="__main__":
 
                                 if next_input_char.isdigit():
                                     next_input_char="DIGIT"
-                                next_input_state = dfa.PeekNextState(next_input_char)
+                                next_input_state = dfa.CheckNextState(next_input_char)
                                 
                                 # symbol - 처리
                                 if input_char=="-":
@@ -288,13 +279,16 @@ if __name__=="__main__":
                                 # - 뒤 숫자가 올 경우
                                     if next_input_char.isdigit():
                                         pos = len(state) 
+                                        # 다음 input이 0일 경우
+                                        if next_input_char== '0':
+                                            pass
                                         # -가 맨 첫번째로 올 경우 음수로 처리
-                                        if pos == 0:
+                                        elif pos == 0:
                                             temp_input_char.append(input_char)
                                             temp_getTableName = "SIGN_INTEGER"
                                             break
-                                        # 다음 input이 0이거나, 전 input이 숫자거나 identifier일 때에만 OP로 처리
-                                        elif (state[pos-1] == "ID" or state[pos-1] == "INTEGER" or state[pos-1] == "CHAR" or next_input_char== '0') :
+                                        # 전 input이 숫자거나 identifier이거나 char일 때에만 OP로 처리
+                                        elif (state[pos-1] == "ID" or state[pos-1] == "INTEGER" or state[pos-1] == "CHAR") :
                                             pass
                                         # 나머지의 경우 음수로 처리
                                         else:
@@ -342,7 +336,7 @@ if __name__=="__main__":
                                 if next_input_char.isdigit():
                                     next_input_char="DIGIT"
 
-                                next_input_state = dfa.PeekNextState(next_input_char)
+                                next_input_state = dfa.CheckNextState(next_input_char)
 
                                 if next_input_state != 'Error' and next_input_state != 'Rejected':
                                     temp_input_char.append(input_char)
