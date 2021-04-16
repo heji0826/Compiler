@@ -1,5 +1,0 @@
-<CHAR,'C'>, <OP,->, <CHAR,'3'>, 
-<CHAR,'c'>, <OP,->, <INTEGER,3>, 
-<LITERAL,"muyahoooo 123">, 
-
-<RETURN,return>, <IF,if>, <OP,->, <INTEGER,0>, 

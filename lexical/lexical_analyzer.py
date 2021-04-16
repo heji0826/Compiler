@@ -102,7 +102,7 @@ if __name__=="__main__":
     f.close()
 
     # output파일
-    out_f = open("./lexical/"+filename+"_out.txt", 'w')
+    out_f = open("./lexical/"+filename[:-4]+".out.txt", 'w')
 
     error_line=0
 
