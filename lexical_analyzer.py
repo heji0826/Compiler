@@ -83,7 +83,7 @@ class DFAautomata:
 if __name__=="__main__":
     filename = input()
     # input 파일
-    f = open("./lexical/"+filename, 'r')
+    f = open("./"+filename, 'r')
     # 라인별로 한줄씩 읽어줌
     readlines = f.readlines()
     lines=[]
@@ -95,7 +95,7 @@ if __name__=="__main__":
     f.close()
 
     # output파일
-    out_f = open("./lexical/"+filename[:-4]+".out.txt", 'w')
+    out_f = open("./"+filename[:-4]+".out.txt", 'w')
 
     # error 발생시 해당 error의 코드라인을 저장해주는 변수
     error_line=0
@@ -384,7 +384,7 @@ if __name__=="__main__":
                                         break
                                 else:
                                     pass
-        out_f.write("$")
+    out_f.write("$")
         # out_f.write('\n')
     out_f.close()
     print("성공적으로 출력파일이 생성되었습니다.")
