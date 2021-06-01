@@ -171,8 +171,8 @@ if __name__=="__main__":
                                             if change_dfa.CheckNextState(str_temp_input_char)=="Error" :
                                                 is_identifier=is_identifier+1
                                                 if is_identifier==3:
-                                                    data="<"+dfa.GetToken()+","+str_temp_input_char+">, "
-                                                    out_f.write(data)
+                                                    data=dfa.GetToken()
+                                                    out_f.write(data+" ")
                                                     state.append(dfa.GetToken())
                                                 else:
                                                     continue
@@ -180,13 +180,13 @@ if __name__=="__main__":
                                                 nextState = change_dfa.CheckNextState(str_temp_input_char)
                                                 change_dfa.SetState(nextState)
                                                 if change_dfa.IsAccepted():
-                                                    data="<"+change_dfa.GetToken()+","+str_temp_input_char+">, "
-                                                    out_f.write(data)
+                                                    data=change_dfa.GetToken()
+                                                    out_f.write(data+" ")
                                                     state.append(change_dfa.GetToken())
                                                     break 
                                         change_dfa.Reset()
                                     else :
-                                        data="<"+dfa.GetToken()+","+str_temp_input_char+">, "
+                                        data=dfa.GetToken()
                                         if dfa.GetToken()=='Error':
                                             out_f.close()
                                             with open("./lexical/"+filename[:-4]+".out.txt", 'w') as error_f:
@@ -194,7 +194,7 @@ if __name__=="__main__":
                                                 error_f.writelines(print_error_text(str_temp_input_char,filename,error_line))
                                             exit()
                                         else :
-                                            out_f.write(data)
+                                            out_f.write(data+" ")
                                             state.append(dfa.GetToken())
 
                                     temp_input_char = [] #초기화
@@ -230,7 +230,7 @@ if __name__=="__main__":
                                 else:
                                     temp_input_char.append(origin_input_char)
                                     str_temp_input_char=''.join(temp_input_char)
-                                    data="<"+dfa.GetToken()+","+str_temp_input_char+">, "
+                                    data=dfa.GetToken()
                                     # error인경우에 대한 핸들링
                                     if dfa.GetToken()=='Error':
                                         out_f.close()
@@ -240,7 +240,7 @@ if __name__=="__main__":
                                             error_f.writelines(print_error_text(str_temp_input_char,filename,error_line))
                                         exit()
                                     else :
-                                        out_f.write(data)
+                                        out_f.write(data+" ")
                                         state.append(dfa.GetToken())
                                     
                                     temp_input_char = [] #초기화
@@ -265,10 +265,10 @@ if __name__=="__main__":
                                     break                                            
                         if i == len(transition_table_1)-1:
                             if input_char=='<':
-                                data="<"+"COMPARISON"+","+input_char+">, "
-                                out_f.write(data)
+                                data="comp"
+                                out_f.write(data+" ")
                             else :
-                                data="<"+dfa.GetToken()+","+input_char+">, "
+                                data=dfa.GetToken()
                                 # error인경우
                                 if dfa.GetToken()=='Error':
                                     out_f.close()
@@ -278,7 +278,7 @@ if __name__=="__main__":
                                         error_f.writelines(print_error_text(input_char,filename,error_line))
                                     exit()
                                 else :
-                                    out_f.write(data)
+                                    out_f.write(data+" ")
                                     state.append(dfa.GetToken())
                         # 다음 table 확인을 위해 reset후 for문 진행
                         dfa.Reset()
@@ -347,8 +347,8 @@ if __name__=="__main__":
                                     # 다음 input의 상태가 reject이면 바로 현 토큰이름과 현재 input을 출력해준다.                      
                                     else :
                                         state.append(dfa.GetToken())                     
-                                        data="<"+dfa.GetToken()+","+input_char+">, "
-                                        out_f.write(data)
+                                        data=dfa.GetToken()
+                                        out_f.write(data+" ")
                                         dfa.Reset()
                                         break
                             # 예외처리 : 입력파일의 가장 마지막 문자에 대한 핸들링 부분
@@ -357,8 +357,8 @@ if __name__=="__main__":
                                         dfa.Reset()
                                         break
                                 else:
-                                    data="<"+dfa.GetToken()+","+input_char+">, "
-                                    out_f.write(data)
+                                    data=dfa.GetToken()
+                                    out_f.write(data+" ")
                                     state.append(dfa.GetToken())
                                     dfa.Reset()
                         
@@ -384,6 +384,7 @@ if __name__=="__main__":
                                         break
                                 else:
                                     pass
-        out_f.write('\n')
+        out_f.write("$")
+        # out_f.write('\n')
     out_f.close()
     print("성공적으로 출력파일이 생성되었습니다.")
