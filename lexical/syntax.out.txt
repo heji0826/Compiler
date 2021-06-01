@@ -1,0 +1,2 @@
+<VTYPE,int>, <INTEGER,123>, <CHAR,'c'>, <BOOL,true>, <LITERAL,"hello">, <ID,a>, <IF,if>, <ELSE,else>, <WHILE,while>, <RETURN,return>, 
+<CLASS,class>, <OP,+>, <OP,->, <OP,*>, <OP,/>, <ASSIGN,=>, <COMPARISON,>>, <SEMI,;>, <SEPARATE,,>, <LBRACE,{>, <RBRACE,}>, <LPAREN,(>, <RPAREN,)>, 

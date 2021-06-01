@@ -8,8 +8,8 @@ COMPARISON_1 = {
         "T2": {">": "",   "<": ""},
     },
     "AcceptTN": {
-        "T1": "COMPARISON",
-        "T2": "COMPARISON",
+        "T1": "comp",
+        "T2": "comp",
     },
 }
 
@@ -21,7 +21,7 @@ COMPARISON_2 = {
         "T2": {"=": ""},
     },
     "AcceptTN": {
-        "T2": "COMPARISON",
+        "T2": "comp",
     },
 }
 
@@ -33,7 +33,7 @@ COMPARISON_3 = {
         "T2": {"!": "",   "=": ""},
     },
     "AcceptTN": {
-        "T2": "COMPARISON",
+        "T2": "comp",
     },
 }
 
@@ -45,7 +45,7 @@ COMPARISON_4 = {
         "T2": {">": "",   "=": ""},
     },
     "AcceptTN": {
-        "T2": "COMPARISON",
+        "T2": "comp",
     },
     
 }
@@ -58,7 +58,7 @@ COMPARISON_5 = {
         "T2": {"<": "",   "=": ""},
     },
     "AcceptTN": {
-        "T2": "COMPARISON",
+        "T2": "comp",
     },
     
 }
@@ -75,10 +75,10 @@ SIGN_INTEGER = {
         "T5": {"-": "",   "EXCEPT_ZERO": "",   "DIGIT": "T5"},
     },
     "AcceptTN": {
-        "T2": "INTEGER",
-        "T3": "INTEGER",
-        "T4": "INTEGER",
-        "T5": "INTEGER",
+        "T2": "num",
+        "T3": "num",
+        "T4": "num",
+        "T5": "num",
     },
     
 }
@@ -90,7 +90,7 @@ ZERO = {
         "T1": {"0": ""},
     },
     "AcceptTN": {
-        "T1": "INTEGER",
+        "T1": "num",
     },
     
 }
@@ -104,8 +104,8 @@ BRACE = {
         "T2": {"{": "",   "}": "",  },
     },
     "AcceptTN": {
-        "T1": "LBRACE",
-        "T2": "RBRACE",
+        "T1": "lbrace",
+        "T2": "rbrace",
     },
     
 }
@@ -118,8 +118,8 @@ PAREN = {
         "T2": {"(": "",   ")": "",  },
     },
     "AcceptTN": {
-        "T1": "LPAREN",
-        "T2": "RPAREN",
+        "T1": "lparen",
+        "T2": "rparen",
     },
     
 }
@@ -132,8 +132,8 @@ BRACKET= {
         "T2": {"[": "",   "]": "",  },
     },
     "AcceptTN": {
-        "T1": "LBRACKET",
-        "T2": "RBRACKET",
+        "T1": "lbracket",
+        "T2": "rbracket",
     },
     
 }
@@ -164,10 +164,10 @@ ARITHMETIC_OPERATOR = {
         "T4": {"+": "",   "-": "",   "*": "",   "/": ""  },
     },
     "AcceptTN": {
-        "T1": "OP",
-        "T2": "OP",
-        "T3": "OP",
-        "T4": "OP",
+        "T1": "addsub",
+        "T2": "addsub",
+        "T3": "multdiv",
+        "T4": "multdiv",
     },
     
 }
@@ -180,8 +180,8 @@ BOOL = {
         "T2": {"true": "",   "false": "",  },
     },
     "AcceptTN": {
-        "T1": "BOOL",
-        "T2": "BOOL",
+        "T1": "boolstr",
+        "T2": "boolstr",
     },
     
 }
@@ -199,11 +199,11 @@ ID = {
         "T5": {"LETTER": "T3", "_": "T4", "DIGIT": "T5" },
     },
     "AcceptTN": {
-        "T1": "ID",
-        "T2": "ID",
-        "T3": "ID",
-        "T4": "ID",
-        "T5": "ID",
+        "T1": "id",
+        "T2": "id",
+        "T3": "id",
+        "T4": "id",
+        "T5": "id",
     },
     
 }
@@ -218,10 +218,10 @@ VARIABLE_TYPE = {
         "T4": {"int": "", "char": "", "boolean": "", "string":"" },
     },
     "AcceptTN": {
-        "T1": "VTYPE",
-        "T2": "VTYPE",
-        "T3": "VTYPE",
-        "T4": "VTYPE",
+        "T1": "vtype",
+        "T2": "vtype",
+        "T3": "vtype",
+        "T4": "vtype",
     },
     
 }
@@ -238,7 +238,7 @@ SINGLE_CHARACTER = {
         "T6": {"'": "", "DIGIT": "", "LETTER": "", "SYMBOL":"", " ":"" },
     },
     "AcceptTN": {
-        "T6": "CHAR",
+        "T6": "character",
     },
     
 }
@@ -254,7 +254,7 @@ LITERAL_STRING = {
         "T5": {'"': "", "DIGIT": "", "LETTER": "", " ":"" },
     },
     "AcceptTN": {
-        "T5": "LITERAL",
+        "T5": "literal",
     },
     
 }
@@ -270,11 +270,11 @@ KEYWORD = {
         "T5": {"if": "", "else": "", "while": "", "class":"", "return":"" },
     },
     "AcceptTN": {
-        "T1": "IF",
-        "T2": "ELSE",
-        "T3": "WHILE",
-        "T4": "CLASS",
-        "T5": "RETURN",
+        "T1": "if",
+        "T2": "else",
+        "T3": "while",
+        "T4": "class",
+        "T5": "return",
     },
     
 }
@@ -286,7 +286,7 @@ ASSIGN= {
         "T1": {"=": ""},
     },
     "AcceptTN": {
-        "T1": "ASSIGN",
+        "T1": "assign",
     },
     
 }
@@ -298,7 +298,7 @@ SEMI= {
         "T1": {";": ""},
     },
     "AcceptTN": {
-        "T1": "SEMI",
+        "T1": "semi",
     },
     
 }
@@ -310,7 +310,7 @@ SEPARATE= {
         "T1": {",": ""},
     },
     "AcceptTN": {
-        "T1": "SEPARATE",
+        "T1": "comma",
     },
     
 }
