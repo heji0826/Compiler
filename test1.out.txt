@@ -1,1 +1,1 @@
-vtype id assign character semi 
+vtype if num assign character semi 
