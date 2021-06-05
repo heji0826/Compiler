@@ -97,7 +97,7 @@ if __name__=="__main__":
     f.close()
 
     # output파일
-    out_f = open("./"+filename[:-7]+".out.txt", 'w')
+    out_f = open("./"+filename[:-4]+".out.txt", 'w')
 
     # error 발생시 해당 error의 코드라인을 저장해주는 변수
     error_line=0
