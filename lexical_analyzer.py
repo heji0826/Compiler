@@ -384,7 +384,6 @@ if __name__=="__main__":
                                         break
                                 else:
                                     pass
-    out_f.write("$")
         # out_f.write('\n')
     out_f.close()
     print("성공적으로 출력파일이 생성되었습니다.")
