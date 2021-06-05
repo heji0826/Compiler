@@ -1,7 +1,9 @@
+import sys
 from slr_table import Grammar, terminals, nonterminals, parsing_table
 
 if __name__=="__main__":
-    file_name=input()
+    # file_name=input()
+    file_name = sys.argv[-1]
     in_f= open(file_name,'r')
     out_f= open('syntax.out.txt','w')
 
