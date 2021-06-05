@@ -1,1 +1,1 @@
-id class id lbrace id id id id lparen id lbracket rbracket id rparen lbrace vtype id assign num semi id assign id addsub num multdiv num semi rbrace rbrace 
+id assign id addsub num multdiv num semi 

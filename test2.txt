@@ -1,7 +1,3 @@
-public class Main {
-    public static void main(String[] args) {
-        int i = 1;
-        boolean b = true;
-        char c = 'a';
-    }
-}
+nt i = 1;
+boolean b = true;
+char c = 'a';

@@ -1,1 +1,1 @@
-addsub num num id num if num id character id num vtype id lparen rparen lbrace vtype id assign character semi vtype num id assign id addsub num semi return addsub num semi rbrace num num num num num num num num num id num num num addsub num num num num num 
+vtype id assign character semi 

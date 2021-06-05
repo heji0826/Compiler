@@ -1,1 +1,0 @@
-INPUT 'vtype id assign character semi $' is ACCEPT!!
