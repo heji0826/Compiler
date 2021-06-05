@@ -20,7 +20,6 @@ if __name__=="__main__":
     while True:
         try:
             cur_state = int(stack[-1]) # 인덱스가 -1인 이유는 stack 배열의 마지막요소를 항상 확인해야하기 때문이다.
-            print(stack,1)
             ## shift-goto 인경우
             if parsing_table[cur_state][next_symbol][0] == "s":
 
@@ -48,15 +47,13 @@ if __name__=="__main__":
 
             # accept인경우
             elif parsing_table[cur_state][next_symbol] == "acc": # 해당 파싱 테이블의 값이 acc인 경우 input은 accept를 의미함
-                print("성공이유")
+                # print("성공")
                 message="INPUT '"+str_f+"' is ACCEPT!!"
                 out_f.write(message)
                 break # 바로 while문을 빠져나온다.
 
-        #catch the TypeError and make some comment why the Error occured in output file.
+
         except TypeError or IndexError:
-            # Error : ^ is unknown symbol(s)
-            # File "test5.txt", line_number 3
             message='File "'+file_name+'" is REJECT!!\n'
             error = "Error : stack" + str(stack) + "is invalid stack(s)"
             out_f.write(message+error)

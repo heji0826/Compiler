@@ -1,4 +1,5 @@
 from dfa_tables import ARITHMETIC_OPERATOR,COMPARISON_1,COMPARISON_2,COMPARISON_3,COMPARISON_4,COMPARISON_5,SIGN_INTEGER,ID,BRACE,ZERO,LITERAL_STRING,SINGLE_CHARACTER,PAREN,BRACKET,WHITESPACE,SEPARATE,SEMI,ASSIGN,BOOL,VARIABLE_TYPE,KEYWORD,DDAOM_ERROR
+import sys
 
 # error가 발생했을 때, output파일의 텍스트 출력해주는 함수
 def print_error_text(input_char, filename,error_line):
@@ -81,9 +82,10 @@ class DFAautomata:
 
 
 if __name__=="__main__":
-    filename = input()
+    # filename = input()
+    filename = sys.argv[-1]
     # input 파일
-    f = open("./"+filename, 'r')
+    f = open(filename, 'r')
     # 라인별로 한줄씩 읽어줌
     readlines = f.readlines()
     lines=[]
