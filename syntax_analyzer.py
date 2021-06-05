@@ -10,7 +10,7 @@ if __name__=="__main__":
     input = str_f.split() # 여러개의 terminal들이 배열로 입력되어있다.
 
     #slr table을 스택과 함께 사용할 것이기때문에 임의로 0(첫번째 state)을 넣은 stack배열을 사용한다.
-    stack = [0]
+    stack = ['0']
     bar = 0 #shift의 기준이 되는 movebar를 의미한다.
     next_symbol = input[bar] #input이 배열에 들어가있으므로 bar는 input 배열의 인덱스로 사용된다.
 
@@ -18,7 +18,7 @@ if __name__=="__main__":
     while True:
         try:
             cur_state = int(stack[-1]) # 인덱스가 -1인 이유는 stack 배열의 마지막요소를 항상 확인해야하기 때문이다.
-            
+            print(stack,1)
             ## shift-goto 인경우
             if parsing_table[cur_state][next_symbol][0] == "s":
 

@@ -1,1 +1,1 @@
-INPUT 'vtype id semi $' is ACCEPT!!
+INPUT 'vtype id assign character semi $' is ACCEPT!!
